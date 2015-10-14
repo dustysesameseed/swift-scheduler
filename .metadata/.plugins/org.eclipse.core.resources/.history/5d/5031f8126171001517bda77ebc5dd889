@@ -1,0 +1,9 @@
+package capstone.mywebapp.user;
+
+public class Administrator implements GeneralUsers {
+	public Administrator(String name){
+		this.name = name;
+	}
+	
+	
+}

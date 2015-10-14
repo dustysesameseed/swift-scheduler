@@ -1,0 +1,27 @@
+package capstone.mywebapp.user;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+
+import capstone.mywebapp.calendar.Event;
+
+public class Administrator extends User {
+
+	public Administrator(String name, String level) {
+		super(name, level);
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public String getLevel(){
+		return level;
+	}
+	
+	public void denyRequest(Event request){
+		
+	}
+	
+	public ClickEvent grantRequest(Event request){
+		return;
+	}
+}

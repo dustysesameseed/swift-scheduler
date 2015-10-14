@@ -1,0 +1,11 @@
+package capstone.mywebapp.user;
+
+import java.util.ArrayList;
+
+import capstone.mywebapp.calendar.Calendar;
+
+public interface GeneralUsers {
+	public String name = "";
+	public String level = "";
+	public ArrayList<Calendar> calendars = null;
+}
