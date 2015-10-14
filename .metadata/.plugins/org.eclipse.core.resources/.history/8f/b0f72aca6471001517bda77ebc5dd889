@@ -1,8 +1,0 @@
-package capstone.mywebapp.user;
-
-public class Administrator extends User {
-
-	public Administrator(String name, String level) {
-		super(name, level);
-	}
-}

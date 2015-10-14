@@ -23,9 +23,3 @@ GWTtrial/.gwt/
 
 #caching for already compiled files
 GWTtrial/gwt-unitCache/
-
-#gwt junit compilation files
-GWTtrial/www-test/
-
-#old GWT (1.5) created this dir
-GWTtrial/.gwt-tmp/

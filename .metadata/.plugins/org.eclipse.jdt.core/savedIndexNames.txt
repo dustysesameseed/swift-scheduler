@@ -1,3 +1,0 @@
-INDEX VERSION 1.126+C:\Users\Sharon\Documents\School\Schoolwork\Fall 15\ECE 4900\.metadata\.plugins\org.eclipse.jdt.core
-2463783362.index
-1712583887.index
