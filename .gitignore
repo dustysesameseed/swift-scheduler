@@ -1,0 +1,31 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+
+# Eclipse workspace stuff #
+.metadata/
+
+# gwt caches and compiled units #
+GWTtrial/war/gwttrial/
+GWTtrial/gwt-unitCache/
+
+# boilerplate generated classes #
+GWTtrial/.apt_generated/
+
+# more caches and things from deploy #
+GWTtrial/war/WEB-INF/deploy/
+GWTtrial/war/WEB-INF/classes/
+
+#compilation logs
+GWTtrial/.gwt/
+
+#caching for already compiled files
+GWTtrial/gwt-unitCache/
+
+#gwt junit compilation files
+GWTtrial/www-test/
+
+#old GWT (1.5) created this dir
+GWTtrial/.gwt-tmp/
