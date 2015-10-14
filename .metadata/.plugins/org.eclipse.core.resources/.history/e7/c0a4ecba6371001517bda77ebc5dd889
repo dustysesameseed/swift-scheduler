@@ -1,0 +1,11 @@
+package capstone.mywebapp.user;
+
+public class User {
+
+	String name = "";
+	
+	public User(String name, String level) {
+		this.name = name;
+		this.level = level;
+	}
+}

@@ -1,0 +1,6 @@
+package capstone.mywebapp.calendar;
+
+public class Event {
+	public ArrayList<UserInt> users;
+	
+}

@@ -1,0 +1,7 @@
+package capstone.mywebapp.user;
+
+public interface GeneralUsers {
+	public String name;
+	public String level;
+	
+}

@@ -1,0 +1,12 @@
+package capstone.mywebapp.calendar;
+
+import java.util.ArrayList;
+
+public class Calendar {
+	public ArrayList<Event> events;
+	public String name;
+	
+	public Calendar(String name){
+		this.name = name;
+	}
+}

@@ -1,0 +1,39 @@
+package capstone.mywebapp.calendar;
+
+import java.util.ArrayList;
+
+public class Calendar {
+	public ArrayList<Event> events;
+	public String name;
+
+	public Calendar(String name) {
+		this.name = name;
+		events = new ArrayList<Event>();
+	}
+
+	public void addEvent(Event newEvent) {
+		events.add(newEvent);
+	}
+
+	public void deleteEvent(String eventName) {
+		int index = 0;
+		for (int i = 0; i < events.size(); i++) {
+
+		}
+
+		events.remove(index);
+	}
+
+	public Event getEvent(String eventName) {
+		int index = 0;
+		Event event;
+		
+		for (Event e : events) {
+			if (e.getName().equals(eventName)) {
+				break;
+			}
+			index++;
+		}
+		event = events.remove(index);
+	}
+}

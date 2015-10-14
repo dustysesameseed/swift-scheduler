@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="capstone.mywebapp.calendar.Calendar"/>
+<fullyQualifiedTypeName name="capstone.mywebapp.user.UserInt"/>
+<fullyQualifiedTypeName name="org.eclipse.jetty.server.Authentication.User"/>
+<fullyQualifiedTypeName name="capstone.mywebapp.user.User"/>
+<fullyQualifiedTypeName name="capstone.mywebapp.calendar.Event"/>
+<fullyQualifiedTypeName name="com.google.gwt.event.dom.client.ClickEvent"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+</qualifiedTypeNameHistroy>

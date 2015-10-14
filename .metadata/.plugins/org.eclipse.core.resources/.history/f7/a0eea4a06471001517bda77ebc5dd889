@@ -1,0 +1,14 @@
+package capstone.mywebapp.calendar;
+
+import java.util.ArrayList;
+import capstone.mywebapp.user.User;
+
+public class Event {
+	public ArrayList<User> users;
+	public String name;
+	public int time;
+	
+	public Event (String name, int time){
+		
+	}
+}
