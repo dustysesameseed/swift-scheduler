@@ -17,6 +17,7 @@ GWTtrial/.apt_generated/
 # more caches and things from deploy #
 GWTtrial/war/WEB-INF/deploy/
 GWTtrial/war/WEB-INF/classes/
+GWTtrial/test-classes/
 
 #compilation logs
 GWTtrial/.gwt/
