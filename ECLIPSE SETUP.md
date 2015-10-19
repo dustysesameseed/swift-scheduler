@@ -1,4 +1,5 @@
 ![alt text](http://i.imgur.com/Bmhp763.png)
+Use Kepler version and not the latest download
 
 ![alt text](http://i.imgur.com/4ubawRH.png)
 
