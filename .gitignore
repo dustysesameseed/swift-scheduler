@@ -9,15 +9,16 @@
 
 # gwt caches and compiled units #
 GWTtrial/war/gwttrial/
-GWTtrial/gwt-unitCache/
+GWTomcat/WebContent/scheduler/
+*/gwt-unitCache/
 
 # boilerplate generated classes #
 GWTtrial/.apt_generated/
 
 # more caches and things from deploy #
-GWTtrial/war/WEB-INF/deploy/
-GWTtrial/war/WEB-INF/classes/
-GWTtrial/test-classes/
+*/*/WEB-INF/deploy/
+*/*/WEB-INF/classes/
+*/test-classes/
 
 #compilation logs
 GWTtrial/.gwt/
