@@ -1,8 +1,0 @@
-package capstone.mywebapp.user;
-
-public class User implements UserInt {
-
-	public User(String name) {
-		this.name = name;
-	}
-}

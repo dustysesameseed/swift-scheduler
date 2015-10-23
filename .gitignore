@@ -1,0 +1,27 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+
+# Eclipse workspace stuff #
+.metadata/
+
+# gwt caches and compiled units #
+GWTtrial/war/gwttrial/
+GWTomcat/WebContent/scheduler/
+*/gwt-unitCache/
+
+# boilerplate generated classes #
+GWTtrial/.apt_generated/
+
+# more caches and things from deploy #
+*/*/WEB-INF/deploy/
+*/*/WEB-INF/classes/
+*/test-classes/
+
+#compilation logs
+GWTtrial/.gwt/
+
+#caching for already compiled files
+GWTtrial/gwt-unitCache/
