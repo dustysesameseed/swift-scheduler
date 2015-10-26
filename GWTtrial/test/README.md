@@ -1,1 +1,0 @@
-git refuses to track empty folders, while GWT won't compile without a test folder, so this is here to make git track this folder.
