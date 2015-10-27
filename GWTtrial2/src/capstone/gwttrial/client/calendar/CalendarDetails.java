@@ -17,6 +17,10 @@ public class CalendarDetails implements Serializable{
 	// public Calendar cal;
 	public User user;
 
+	public CalendarDetails() {
+		events = new ArrayList<EventDetails>();
+	}
+	
 	public CalendarDetails(String username) {
 		this.username = username;
 		events = new ArrayList<EventDetails>();

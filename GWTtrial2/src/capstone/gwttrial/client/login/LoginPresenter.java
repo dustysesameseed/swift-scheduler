@@ -12,18 +12,20 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 public class LoginPresenter implements Presenter {
 
 	private final EventBus eventBus;
 	private final LoginView display;
-	private final LoginServiceAsync rpcService;
+	private final LoginServiceAsync rpcLogin;
 
 	public LoginPresenter(EventBus eventBus, LoginView loginView) {
 		this.eventBus = eventBus;
 		this.display = loginView;
-		this.rpcService = GWT.create(LoginService.class);
+		this.rpcLogin = GWT.create(LoginService.class);
 	}
 
 	private void bind() {
@@ -33,12 +35,23 @@ public class LoginPresenter implements Presenter {
 				if (validateCredentials()) {
 					// TODO: get user level from server...for now, we are all
 					// normal
-					User.setCurrentUser(display.getUN(), "normal"); // Does this do anything?
-					display.getErrorLabel().setText("Login successful");
-					eventBus.fireEvent(new LoginEvent("home"));
+					//User.setCurrentUser(display.getUN(), "normal"); <- Does this do anything?
+					//display.getErrorLabel().setText("Login successful");
+					//eventBus.fireEvent(new LoginEvent("home"));
+					
+					rpcLogin.getLoginSuccess(display.getUN(), display.getPW(), new AsyncCallback<Boolean>() {
+						
+						public void onSuccess(Boolean loggedIn){
+							eventBus.fireEvent(new LoginEvent("home"));
+						}
+						public void onFailure(Throwable caught){
+							Window.alert("Failure on login attempt.");
+						}
+					});
+					
 				} else {
 					display.getErrorLabel().setText(
-							"Username/password not found.");
+							"Invalid Username/password.");
 				}
 			}
 

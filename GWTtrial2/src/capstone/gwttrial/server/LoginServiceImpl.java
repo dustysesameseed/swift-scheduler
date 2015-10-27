@@ -16,9 +16,9 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	public Boolean getLoginSuccess(String un, String pw) throws IllegalArgumentException {
 		
 		// TODO Make sure username/password combo is in database, create session instance server-side
-		Boolean login = FieldVerifier.isValidName(un, pw);
+		Boolean loggedIn = FieldVerifier.isValidName(un, pw);
 		
-		return login;
+		return loggedIn;
 	}
 
 }

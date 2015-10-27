@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 /**
  * The client-side stub for the RPC service.
  */
-@RemoteServiceRelativePath("getcalendar")
+@RemoteServiceRelativePath("calendar")
 public interface CalendarService extends RemoteService {
 	CalendarDetails getCalendarEvents(String un) throws IllegalArgumentException;
 	Boolean addCalendarEvent(EventDetails event) throws IllegalArgumentException;

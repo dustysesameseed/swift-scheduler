@@ -51,6 +51,8 @@ public class CalendarPresenter implements Presenter {
 		bind();
 		container.clear();
 		container.add(display.asWidget());
+		
+		
 	}
 
 	public String getCurrentUser() {
