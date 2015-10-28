@@ -1,12 +1,8 @@
 package capstone.gwttrial.client.user;
 
-<<<<<<< HEAD
-public class User {
-=======
 import java.io.Serializable;
 
 public class User implements Serializable{
->>>>>>> refs/remotes/origin/master
 
 	private static String un;
 	private static String level;
