@@ -1,7 +1,7 @@
 package capstone.gwttrial.client.calendar.service;
 
 import capstone.gwttrial.client.calendar.CalendarDetails;
-import capstone.gwttrial.client.event.EventDetails;
+import capstone.gwttrial.client.calendar.EventDetails;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -11,7 +11,12 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("calendar")
 public interface CalendarService extends RemoteService {
-	CalendarDetails getCalendarEvents(String un) throws IllegalArgumentException;
-	Boolean addCalendarEvent(EventDetails event) throws IllegalArgumentException;
-	Boolean removeCalendarEvent(EventDetails event) throws IllegalArgumentException;
+	CalendarDetails getCalendarEvents(String un)
+			throws IllegalArgumentException;
+
+	Boolean addCalendarEvent(EventDetails event)
+			throws IllegalArgumentException;
+
+	Boolean removeCalendarEvent(EventDetails event)
+			throws IllegalArgumentException;
 }
