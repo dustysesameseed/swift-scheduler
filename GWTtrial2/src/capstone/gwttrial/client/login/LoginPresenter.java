@@ -35,7 +35,7 @@ public class LoginPresenter implements Presenter {
 				if (validateCredentials()) {
 					// TODO: get user level from server...for now, we are all
 					// normal
-					//User.setCurrentUser(display.getUN(), "normal"); <- Does this do anything?
+					User.setCurrentUser(display.getUN(), "normal");
 					//display.getErrorLabel().setText("Login successful");
 					//eventBus.fireEvent(new LoginEvent("home"));
 					
