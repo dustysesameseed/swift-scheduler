@@ -2,7 +2,6 @@ package capstone.gwttrial.client;
 
 import capstone.gwttrial.client.calendar.CalendarPresenter;
 import capstone.gwttrial.client.calendar.CalendarView;
-import capstone.gwttrial.client.calendar.Presenter;
 import capstone.gwttrial.client.login.LoginEvent;
 import capstone.gwttrial.client.login.LoginEventHandler;
 import capstone.gwttrial.client.login.LoginPresenter;
@@ -63,8 +62,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			else if (token.equals("home")) {
 				username = User.getUsername();
-				presenter = new CalendarPresenter(eventBus, new CalendarView(),
-						username);
+				presenter = new CalendarPresenter(eventBus,
+						new CalendarView(), username);
 			}
 
 			if (presenter != null) {

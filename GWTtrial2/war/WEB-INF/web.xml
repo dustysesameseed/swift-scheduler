@@ -7,15 +7,25 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>capstone.gwttrial.server.CalendarServiceImpl</servlet-class>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>capstone.gwttrial.server.LoginServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/gwttrial/greet</url-pattern>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/gwttrial/login</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>calendarServlet</servlet-name>
+    <servlet-class>capstone.gwttrial.server.LoginServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>calendarServlet</servlet-name>
+    <url-pattern>/gwttrial/calendar</url-pattern>
+  </servlet-mapping>
+    
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>GWTtrial.html</welcome-file>
