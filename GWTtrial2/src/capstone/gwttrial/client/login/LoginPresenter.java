@@ -51,7 +51,7 @@ public class LoginPresenter implements Presenter {
 					
 				} else {
 					display.getErrorLabel().setText(
-							"Invalid Username/password.");
+							"Invalid Username/password!");
 				}
 			}
 
