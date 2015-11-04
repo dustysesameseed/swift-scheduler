@@ -3,6 +3,7 @@ package capstone.gwttrial.client.calendar;
 import capstone.gwttrial.client.user.User;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -14,7 +15,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
+import java.util.Date;
 import java.util.List;
 
 public class CalendarView extends Composite implements CalendarViewHandler {
@@ -23,6 +24,9 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	private FlexTable contactsTable;
 	private final FlexTable contentTable;
 	private final DecoratorPanel parentPanel;
+	private final String[] dateInfo;
+	private final String[] daysOfWeek = { "Sunday", "Monday", "Tuesday",
+			"Wednesday", "Thursday", "Friday", "Saturday" };
 
 	public CalendarView() {
 		parentPanel = new DecoratorPanel();
@@ -39,6 +43,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		contentTable.getFlexCellFormatter().setVerticalAlignment(0, 0,
 				DockPanel.ALIGN_TOP);
 
+		dateInfo = parseDate();
 		// Create the menu
 		setLeft();
 		setGrid();
@@ -46,25 +51,22 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		parentPanel.add(contentTable);
 	}
 
+	// TODO: Possibly we want to make a separate Grid widget and refresh it when
+	// necessary
 	private void setGrid() {
-		Label temp = new Label("THIS IS WHERE AN EVENT SHOULD GO");
 		FlexTable grid = new FlexTable();
 		grid.insertRow(0);
 		grid.insertRow(0);
 		grid.insertRow(0);
-		int leftPos = contentTable.getAbsoluteLeft();
 		FlexCellFormatter gridFormatter = grid.getFlexCellFormatter();
 
 		// Set the header cells
-		gridFormatter.setColSpan(0, 0, 7);
-		grid.setText(0, 0, "CURRENT MONTH");
+		gridFormatter.setColSpan(0, 0, 8);
+		grid.setText(0, 0, getCurrentWeek());
 		gridFormatter.setStyleName(0, 0, "currentMonthCell");
 
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 8; i++) {
 			gridFormatter.setStyleName(1, i, "daysOfTheWeekCells");
-			// gridFormatter.setHeight(0, 0, "10%");
-			// gridFormatter.setAlignment(0, 0, DockPanel.ALIGN_CENTER,
-			// DockPanel.ALIGN_MIDDLE);
 		}
 
 		grid.setWidth("100%");
@@ -74,36 +76,36 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		grid.setBorderWidth(5);
 		grid.setTitle("Add Event");
 
-		grid.setText(1, 0, "Sunday");
-		grid.setText(1, 1, "Monday");
-		grid.setText(1, 2, "Tuesday");
-		grid.setText(1, 3, "Wednesday");
-		grid.setText(1, 4, "Thursday");
-		grid.setText(1, 5, "Friday");
-		grid.setText(1, 6, "Saturday");
-		grid.setText(2, 0, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(2, 1, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(2, 2, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(2, 3, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(2, 4, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(2, 5, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(2, 6, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(3, 0, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(3, 1, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(3, 2, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(3, 3, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(3, 4, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(3, 5, "THIS IS WHERE AN EVENT SHOULD GO");
-		grid.setText(3, 6, "THIS IS WHERE AN EVENT SHOULD GO");
+		// set text column 0
+		grid.setText(2, 0, "8:00 am");
+		grid.setText(3, 0, "9:00 am");
+		grid.setText(4, 0, "10:00 am");
+		grid.setText(5, 0, "11:00 am");
+		grid.setText(6, 0, "12:00 pm");
+		grid.setText(7, 0, "1:00 pm");
+		grid.setText(8, 0, "2:00 pm");
+		grid.setText(9, 0, "3:00 pm");
+		grid.setText(10, 0, "4:00 pm");
+		grid.setText(11, 0, "5:00 pm");
+
+		for (int i = 1; i < 8; i++) {
+			grid.setText(1, i, daysOfWeek[i - 1]);
+		}
+
+		for (int i = 2; i < 12; i++) {
+			for (int j = 1; j < 8; j++) {
+				grid.setText(i, j, "I AM AN EVENT");
+			}
+		}
 		contentTable.setWidget(0, 1, grid);
 	}
 
 	private void setLeft() {
 		VerticalPanel left = new VerticalPanel();
 		left.setHeight("100%");
-		left.setWidth(parentPanel.getOffsetWidth() / 4 + "px");
-		left.setBorderWidth(50);
-		left.setSpacing(20);
+		left.setWidth("100%");
+		left.setBorderWidth(20);
+		left.setSpacing(10);
 		left.setHorizontalAlignment(VerticalPanel.ALIGN_LEFT);
 
 		Label welcome = new Label("Welcome, " + User.getUsername() + "!");
@@ -116,7 +118,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		logout = new Button("Sign Out");
 		left.add(prof);
 		left.add(logout);
-		contentTable.getCellFormatter().addStyleName(0, 0, "contacts-ListMenu");
+		contentTable.getCellFormatter().addStyleName(0, 0, "calendar-LeftCell");
 		contentTable.setWidget(0, 0, left);
 	}
 
@@ -143,5 +145,32 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 	public Widget asWidget() {
 		return this;
+	}
+
+	private String[] parseDate() {
+		Date date = new Date();
+		String dateString = DateTimeFormat
+				.getFormat("EEEE MMM d yyyy HH mm ss").format(date);
+		return dateString.split(" ");
+	}
+
+	private String getCurrentWeek() {
+		String dayOfWeek = dateInfo[0]; // "Monday", "Wednesday"...etc.
+		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
+		String str = dateInfo[1] + " "; // "Nov", "Dec"...etc.
+
+		int numDaysFromSunday = 0;
+		for (int i = 0; i < 7; i++) {
+			if (dayOfWeek.equals(daysOfWeek[i])) {
+				numDaysFromSunday = i;
+				break;
+			}
+		}
+
+		int beginWeek = dayOfMonth - numDaysFromSunday;
+		int endWeek = dayOfMonth + (6 - numDaysFromSunday);
+		str = str.concat(beginWeek + ", " + dateInfo[3] + " - " + dateInfo[1]
+				+ " " + endWeek + ", " + dateInfo[3]);
+		return str;
 	}
 }

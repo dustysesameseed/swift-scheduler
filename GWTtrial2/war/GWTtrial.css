@@ -37,7 +37,7 @@ td.contacts-NavContainer {
 	padding-right: 10px;
 }
 
-td.contacts-ListMenu {
+td.calendar-LeftCell {
 	background-color: #D0E4F6;
 	padding-bottom: 6px;
 }
@@ -89,17 +89,16 @@ td.contacts-ListName {
 
 .currentMonthCell {
 	font-stretch: expanded;
-    font-size: xx-large;
+	font-size: xx-large;
 	font-family: fantasy;
 	font-weight: bold;
 	text-align: center;
 	height: 10%;
 }
 
-
 .daysOfTheWeekCells {
 	font-stretch: expanded;
-    font-size: x-large;
+	font-size: x-large;
 	font-family: fantasy;
 	font-weight: bold;
 	text-align: center;
