@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -18,10 +19,13 @@ public class LoginView extends Composite {
 	private TextBox unField;
 	private PasswordTextBox pwField;
 	private Button signInButton;
+	private String token;
 
-	public LoginView() {
+	public LoginView(String token) {
 		vertPanel = new VerticalPanel();
 		initWidget(vertPanel);
+
+		this.token = token;
 
 		// Initialize Labels, Boxes, and Buttons
 		header = new Label("Swift Scheduler");
@@ -55,7 +59,14 @@ public class LoginView extends Composite {
 		flexTable.setWidget(2, 2, signInButton);
 		flexTable.setWidget(3, 0, errorLabel);
 
+		if (token.equals("logout")) {
+			Label logoutLabel = new Label("You have been logged out");
+			logoutLabel.setStyleName("serverResponseLabelError");
+			flexTable.setWidget(4, 0, logoutLabel);
+		}
+
 		// Configure verticalPanel
+		vertPanel.getParent().setHeight("100%");
 		vertPanel.setSize("100%", "100%");
 		vertPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vertPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);

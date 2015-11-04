@@ -1,8 +1,6 @@
 package capstone.gwttrial.client.login;
 
 import capstone.gwttrial.client.Presenter;
-import capstone.gwttrial.client.calendar.service.CalendarService;
-import capstone.gwttrial.client.calendar.service.CalendarServiceAsync;
 import capstone.gwttrial.client.login.service.LoginService;
 import capstone.gwttrial.client.login.service.LoginServiceAsync;
 import capstone.gwttrial.client.user.User;
@@ -36,19 +34,21 @@ public class LoginPresenter implements Presenter {
 					// TODO: get user level from server...for now, we are all
 					// normal
 					User.setCurrentUser(display.getUN(), "normal");
-					//display.getErrorLabel().setText("Login successful");
-					//eventBus.fireEvent(new LoginEvent("home"));
-					
-					rpcLogin.getLoginSuccess(display.getUN(), display.getPW(), new AsyncCallback<Boolean>() {
-						
-						public void onSuccess(Boolean loggedIn){
-							eventBus.fireEvent(new LoginEvent("home"));
-						}
-						public void onFailure(Throwable caught){
-							Window.alert("Failure on login attempt.");
-						}
-					});
-					
+					// display.getErrorLabel().setText("Login successful");
+					// eventBus.fireEvent(new LoginEvent("home"));
+
+					rpcLogin.getLoginSuccess(display.getUN(), display.getPW(),
+							new AsyncCallback<Boolean>() {
+
+								public void onSuccess(Boolean loggedIn) {
+									eventBus.fireEvent(new LoginEvent("home"));
+								}
+
+								public void onFailure(Throwable caught) {
+									Window.alert("Failure on login attempt.");
+								}
+							});
+
 				} else {
 					display.getErrorLabel().setText(
 							"Invalid Username/password!");

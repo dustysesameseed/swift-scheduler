@@ -1,6 +1,6 @@
 package capstone.gwttrial.client.user;
 
-import capstone.gwttrial.client.event.EventDetails;
+import capstone.gwttrial.client.calendar.EventDetails;
 
 public class Administrator extends User {
 	public Administrator(){
