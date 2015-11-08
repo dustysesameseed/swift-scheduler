@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Anchor;
 import java.util.Date;
 import java.util.List;
@@ -144,7 +143,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		left.add(prof);
 		left.add(da);
 		left.add(anchor1);
-		left.add(contact);		
+		left.add(contact);
 		left.add(logout);
 		contentTable.getCellFormatter().addStyleName(0, 0, "calendar-LeftCell");
 		contentTable.setWidget(0, 0, left);
@@ -157,7 +156,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	public HasClickHandlers getLogoutButton() {
 		return logout;
 	}
-	
+
 	public FlexTable getCalendar() {
 		return grid;
 	}
