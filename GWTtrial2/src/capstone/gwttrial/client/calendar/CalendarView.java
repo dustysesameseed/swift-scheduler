@@ -124,6 +124,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	}
 
 	private void setLeft() {
+		
 		VerticalPanel left = new VerticalPanel();
 		left.setHeight("100%");
 		left.setWidth("100%");

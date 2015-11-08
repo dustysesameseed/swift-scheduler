@@ -45,7 +45,7 @@ public class LoginView extends Composite {
 		// Add style and text
 		header.setStyleName("header");
 		signInButton.addStyleName("signInButton");
-		registerButton.addStyleName("registerButton");
+		registerButton.setStyleName("registerButton");
 		errorLabel.setStyleName("serverResponseLabelError");
 		unField.setText("Username");
 		pwField.setText("Password");
@@ -61,7 +61,7 @@ public class LoginView extends Composite {
 		flexTable.setWidget(2, 0, pwField);
 		flexTable.setWidget(2, 2, signInButton);
 		flexTable.setWidget(3, 0, errorLabel);
-		flexTable.setWidget(5, 0, registerButton);
+		flexTable.setWidget(5, 2, registerButton);
 
 		if (token.equals("logout")) {
 			Label logoutLabel = new Label("You have been logged out");
