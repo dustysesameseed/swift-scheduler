@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import capstone.gwttrial.client.Presenter;
+import capstone.gwttrial.client.calendar.CalendarDetails;
 import capstone.gwttrial.client.calendar.EventDetails;
 import capstone.gwttrial.client.login.LoginEvent;
 
@@ -28,6 +29,7 @@ public class CreateEventPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				eventDeets.parseDetails(view.getEventDetails());
+				CalendarDetails.addEvent(eventDeets);
 				eventBus.fireEvent(event);
 			}
 		});

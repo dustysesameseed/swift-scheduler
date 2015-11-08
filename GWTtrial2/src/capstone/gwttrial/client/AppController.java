@@ -25,11 +25,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final EventBus eventBus;
 	private HasWidgets container;
 	private String username;
-	private Cell addEventSrc;
+	private Cell createEventSrc;
 
 	public AppController(EventBus eventBus) {
 		this.eventBus = eventBus;
-		this.addEventSrc = null;
+		this.createEventSrc = null;
 		bind();
 	}
 
@@ -50,8 +50,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		eventBus.addHandler(CreateEvent.TYPE, new CreateEventHandler() {
 			public void onCreateEvent(CreateEvent event) {
-				createToken("addEvent");
-				addEventSrc = event.getEventCell();
+				createToken("createEvent");
+				createEventSrc = event.getEventCell();
 			}
 		});
 	}
@@ -80,19 +80,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			if (token.equals("login") || token.equals("logout")) {
 				presenter = new LoginPresenter(eventBus, new LoginView(token));
-			}
-
-			else if (token.equals("home")) {
+			} else if (token.equals("home")) {
 				username = User.getUsername();
 				presenter = new CalendarPresenter(eventBus, new CalendarView(),
 						username);
-			}
-
-			else if (token.equals("addEvent")) {
+			} else if (token.equals("createEvent")) {
 				presenter = new CreateEventPresenter(eventBus,
-						new CreateEventView(addEventSrc));
+						new CreateEventView(createEventSrc));
 			}
-
 			if (presenter != null) {
 				presenter.go(container);
 			}

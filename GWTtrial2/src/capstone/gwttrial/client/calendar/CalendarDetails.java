@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import capstone.gwttrial.client.user.User;
 
 public class CalendarDetails implements Serializable {
-	public ArrayList<EventDetails> events;
+	public static ArrayList<EventDetails> events;
 	public String username;
 	public User user;
 
@@ -18,15 +18,15 @@ public class CalendarDetails implements Serializable {
 		events = new ArrayList<EventDetails>();
 	}
 
-	public void addEvent(EventDetails newEvent) {
+	public static void addEvent(EventDetails newEvent) {
 		events.add(newEvent);
 	}
 
-	public void deleteEvent(String eventName) {
+	public static void deleteEvent(String eventName) {
 		events.remove(getEventIdx(eventName));
 	}
 
-	public int getEventIdx(String eventName) {
+	public static int getEventIdx(String eventName) {
 		int index = 0;
 		boolean found = false;
 

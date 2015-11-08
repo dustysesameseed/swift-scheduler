@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CalendarView extends Composite implements CalendarViewHandler {
+	private CalendarWidget userCal;
 	private Button prof;
 	private Button logout;
 	private FlexTable contactsTable;
@@ -34,6 +35,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		parentPanel = new DecoratorPanel();
 		initWidget(parentPanel);
 
+		userCal = new CalendarWidget();
 		dateInfo = parseDate();
 		contentTable = new FlexTable();
 		grid = new FlexTable();
@@ -47,7 +49,8 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 		setContentTable();
 		setLeft();
-		setCalendar();
+		// setCalendar();
+		setCalendar2();
 
 		parentPanel.add(contentTable);
 	}
@@ -138,6 +141,11 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		contentTable.setWidget(0, 0, left);
 	}
 
+	private void setCalendar2() {
+		userCal.render(getCurrentWeek());
+		contentTable.setWidget(0, 1, userCal.getCalendar());
+	}
+
 	public HasClickHandlers getProfileButton() {
 		return prof;
 	}
@@ -147,7 +155,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	}
 
 	public FlexTable getCalendar() {
-		return grid;
+		return userCal.getCalendar();
 	}
 
 	public void setData(List<String> data) {
