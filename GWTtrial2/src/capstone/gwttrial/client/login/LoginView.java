@@ -45,7 +45,7 @@ public class LoginView extends Composite {
 		// Add style and text
 		header.setStyleName("header");
 		signInButton.addStyleName("signInButton");
-		registerButton.addStyleName("registerButton");
+		registerButton.setStyleName("registerButton");
 		errorLabel.setStyleName("serverResponseLabelError");
 		unField.setText("Username");
 		pwField.setText("Password");
