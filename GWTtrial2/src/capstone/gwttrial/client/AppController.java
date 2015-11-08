@@ -21,6 +21,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+
 public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final EventBus eventBus;
 	private HasWidgets container;
@@ -98,4 +99,5 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			}
 		}
 	}
+	
 }

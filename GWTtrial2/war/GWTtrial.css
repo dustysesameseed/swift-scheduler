@@ -110,6 +110,17 @@ td.contacts-ListName {
 	font-size: 16pt;
 }
 
+.registerButton {
+	display: block;
+	font-size: 20pt;
+}
+
+.gwt-DatePicker {
+  padding: 10px 8px;
+  border: 1px solid #ccc;
+  border-top: 1px solid #999;
+  font-size: 100%; }
+
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
 	width: 400px;
