@@ -18,10 +18,33 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class CalendarWidget extends VerticalPanel {
 
+	/*
+	 * FlexTable that composes the Calendar
+	 */
 	private FlexTable grid;
+
+	/*
+	 * Contains date information (see following list of index date contents):
+	 * *****idx 0: Current Day of Week -- Sunday, Monday, Tuesday, Wednesday...
+	 * *****idx 1: Current Month -- Jan, Feb, Mar, Apr, May, Jun, Jul...
+	 * *****idx 2: Current Day of the Month -- 1, 2, 3, 4, 5, 6, 7, 8, 9, 10...
+	 * *****idx 3: Current Year -- 2014, 2015, 2016...
+	 */
 	private String[] dateInfo;
+
+	/*
+	 * day of the month that current week begins on
+	 */
 	private int beginWeek;
+
+	/*
+	 * day of the month that current week ends on
+	 */
 	private int endWeek;
+
+	/*
+	 * List of days of the week String constants
+	 */
 	private final String[] daysOfWeek = { "Sunday", "Monday", "Tuesday",
 			"Wednesday", "Thursday", "Friday", "Saturday" };
 

@@ -12,12 +12,21 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+<<<<<<< HEAD
+=======
+import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.user.client.ui.Anchor;
+import java.util.Date;
+>>>>>>> master
 import java.util.List;
 
 public class CalendarView extends Composite implements CalendarViewHandler {
 	private CalendarWidget userCal;
 	private Button prof;
 	private Button logout;
+	private DatePicker da;
+	private Button contact;
+	private Anchor anchor1;
 	private FlexTable contactsTable;
 	private FlexTable contentTable;
 	private final DecoratorPanel parentPanel;
@@ -68,7 +77,13 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 		prof = new Button("Profile");
 		logout = new Button("Sign Out");
+		da = new DatePicker();
+		contact = new Button("Contact Admin");
+		anchor1 = new Anchor("Emergency Message", "www.osu.edu");
 		left.add(prof);
+		left.add(da);
+		left.add(anchor1);
+		left.add(contact);
 		left.add(logout);
 		contentTable.getCellFormatter().addStyleName(0, 0, "calendar-LeftCell");
 		contentTable.setWidget(0, 0, left);
