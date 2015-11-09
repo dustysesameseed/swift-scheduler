@@ -47,8 +47,10 @@ public class CalendarPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				Cell src = grid.getCellForEvent(event);
+				int row = src.getRowIndex();
+				int col = src.getCellIndex();
 
-				if (src.getRowIndex() != 0 && src.getRowIndex() != 1) {
+				if (row != 0 && row != 1 && col != 0) {
 					eventBus.fireEvent(new CreateEvent(src, "home"));
 				}
 			}
