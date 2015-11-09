@@ -12,12 +12,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-<<<<<<< HEAD
-=======
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.user.client.ui.Anchor;
-import java.util.Date;
->>>>>>> master
 import java.util.List;
 
 public class CalendarView extends Composite implements CalendarViewHandler {
