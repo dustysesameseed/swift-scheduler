@@ -29,7 +29,7 @@ public class CreateEventView extends Composite {
 		// Initialize boxes and buttons
 		this.src = source;
 
-		createButton = new Button("Add");
+		createButton = new Button("Create");
 		cancelButton = new Button("Cancel");
 
 		configure();
@@ -95,11 +95,16 @@ public class CreateEventView extends Composite {
 			timeTBox.setText("Enter a time (eg. 5:00 pm)");
 		}
 
-		nameTBox.setText("Add the name of your event (eg. Team Meeting)");
-		nameTBox.setWidth(parentPanel.getOffsetWidth() / 3 + "%");
+		nameTBox.setText("Enter an event name (eg. Team Meeting)");
 		locTBox.setText("Enter a location (eg. Ohio Union)");
 		dateTBox.setText("Enter a date (eg. 11/15/15)");
 		descTBox.setText("Enter a description");
+
+		nameTBox.setWidth("180%");
+		locTBox.setWidth("180%");
+		dateTBox.setWidth("180%");
+		timeTBox.setWidth("180%");
+		descTBox.setWidth("180%");
 		nameTBox.setFocus(true);
 		nameTBox.selectAll();
 
