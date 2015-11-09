@@ -21,7 +21,6 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-
 public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final EventBus eventBus;
 	private HasWidgets container;
@@ -37,21 +36,25 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private void bind() {
 		History.addValueChangeHandler(this);
 
+		// "Sign In" button eventBus handler -- token "login"
 		eventBus.addHandler(LoginEvent.TYPE, new LoginEventHandler() {
 			public void onLogin(LoginEvent event) {
-				createToken("home");
+				createToken(event.getId());
 			}
 		});
 
+		// "Sign Out" button eventBus handler -- token "home"
 		eventBus.addHandler(LogoutEvent.TYPE, new LogoutEventHandler() {
 			public void onLogout(LogoutEvent event) {
-				createToken("logout");
+				createToken(event.getId());
 			}
 		});
 
+		// "Create" button eventBus handler (for the CreateEvent view and
+		// CalendarView) -- token "createEvent" or "home"
 		eventBus.addHandler(CreateEvent.TYPE, new CreateEventHandler() {
 			public void onCreateEvent(CreateEvent event) {
-				createToken("createEvent");
+				createToken(event.getId());
 				createEventSrc = event.getEventCell();
 			}
 		});
@@ -67,12 +70,21 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 	}
 
-	// Create tokens for history and page loads
+	/**
+	 * Create tokens for history and page loads
+	 * 
+	 * @param token
+	 */
 	private void createToken(String token) {
 		History.newItem(token);
 	}
 
-	// Check token and create appropriate presenters
+	/**
+	 * Check token and create appropriate presenters
+	 * 
+	 * @param ValueChangeEvent
+	 *            <String> event
+	 */
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
 
@@ -89,10 +101,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				presenter = new CreateEventPresenter(eventBus,
 						new CreateEventView(createEventSrc));
 			}
+
 			if (presenter != null) {
 				presenter.go(container);
 			}
 		}
 	}
-	
+
 }

@@ -50,7 +50,7 @@ public class CalendarPresenter implements Presenter {
 				int col = src.getCellIndex();
 
 				if (row != 0 && row != 1 && col != 0) {
-					eventBus.fireEvent(new CreateEvent(src, "home"));
+					eventBus.fireEvent(new CreateEvent(src, "createEvent"));
 				}
 			}
 		});

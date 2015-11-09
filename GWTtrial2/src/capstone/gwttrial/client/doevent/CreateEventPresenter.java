@@ -3,7 +3,6 @@ package capstone.gwttrial.client.doevent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import capstone.gwttrial.client.Presenter;
@@ -30,7 +29,7 @@ public class CreateEventPresenter implements Presenter {
 			public void onClick(ClickEvent event) {
 				eventDeets.parseDetails(view.getEventDetails());
 				CalendarDetails.addEvent(eventDeets);
-				eventBus.fireEvent(event);
+				eventBus.fireEvent(new CreateEvent(null, "home"));
 			}
 		});
 
@@ -38,7 +37,7 @@ public class CreateEventPresenter implements Presenter {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				eventBus.fireEvent(new LoginEvent("home"));
+				eventBus.fireEvent(new CreateEvent(null, "home"));
 			}
 		});
 	}

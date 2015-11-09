@@ -2,6 +2,8 @@ package capstone.gwttrial.client.doevent;
 
 import java.util.ArrayList;
 
+import capstone.gwttrial.client.calendar.CalendarWidget;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -18,14 +20,14 @@ public class CreateEventView extends Composite {
 	private Button createButton;
 	private Button cancelButton;
 	private VerticalPanel parentPanel;
-	private Cell addEventSrc;
+	private Cell src;
 
-	public CreateEventView(Cell addEventSrc) {
+	public CreateEventView(Cell source) {
 		parentPanel = new VerticalPanel();
 		initWidget(parentPanel);
 
 		// Initialize boxes and buttons
-		this.addEventSrc = addEventSrc;
+		this.src = source;
 
 		createButton = new Button("Add");
 		cancelButton = new Button("Cancel");
@@ -40,13 +42,12 @@ public class CreateEventView extends Composite {
 		parentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		parentPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 
-		// int time = addEventSrc.getRowIndex();
-
 		// Initialize Labels, Boxes, and Buttons
 		Label header = new Label("Create an Event");
 		Label nameLabel = new Label("Event Name");
 		Label locLabel = new Label("Location");
-		Label dateTimeLabel = new Label("Date/Time");
+		Label dateLabel = new Label("Date");
+		Label timeLabel = new Label("Time");
 		Label descLabel = new Label("Description");
 		configureTextBoxes();
 
@@ -55,22 +56,23 @@ public class CreateEventView extends Composite {
 
 		// Everything goes into a FlexTable
 		FlexTable flexTable = new FlexTable();
-		flexTable.setCellPadding(25);
-		flexTable.setCellSpacing(25);
+		flexTable.setCellPadding(100);
+		flexTable.setCellSpacing(100);
 
 		flexTable.setWidget(0, 0, nameLabel);
 		flexTable.setWidget(1, 0, locLabel);
-		flexTable.setWidget(2, 0, dateTimeLabel);
-		flexTable.setWidget(3, 0, descLabel);
+		flexTable.setWidget(2, 0, dateLabel);
+		flexTable.setWidget(3, 0, timeLabel);
+		flexTable.setWidget(4, 0, descLabel);
 
 		flexTable.setWidget(0, 1, boxes.get(0));
 		flexTable.setWidget(1, 1, boxes.get(1));
 		flexTable.setWidget(2, 1, boxes.get(2));
-		flexTable.setWidget(2, 2, boxes.get(3));
-		flexTable.setWidget(3, 1, boxes.get(4));
+		flexTable.setWidget(3, 1, boxes.get(3));
+		flexTable.setWidget(4, 1, boxes.get(4));
 
-		flexTable.setWidget(4, 3, cancelButton);
-		flexTable.setWidget(4, 4, createButton);
+		flexTable.setWidget(5, 3, cancelButton);
+		flexTable.setWidget(5, 4, createButton);
 
 		// Add the FlexTable to the ParentPanel
 		parentPanel.add(header);
@@ -84,10 +86,19 @@ public class CreateEventView extends Composite {
 		TextBox timeTBox = new TextBox();
 		TextBox descTBox = new TextBox();
 
-		nameTBox.setText("Add the name of your event");
-		locTBox.setText("Enter a location");
-		dateTBox.setText("Enter a date");
-		timeTBox.setText("Enter a time");
+		if (src != null) {
+			int row = src.getRowIndex();
+			String hr = CalendarWidget.getHourFromRow(row).toString();
+			String amPm = CalendarWidget.getAmPm();
+			timeTBox.setText(hr + ":00" + amPm);
+		} else {
+			timeTBox.setText("Enter a time (eg. 5:00 pm)");
+		}
+
+		nameTBox.setText("Add the name of your event (eg. Team Meeting)");
+		nameTBox.setWidth(parentPanel.getOffsetWidth() / 3 + "%");
+		locTBox.setText("Enter a location (eg. Ohio Union)");
+		dateTBox.setText("Enter a date (eg. 11/15/15)");
 		descTBox.setText("Enter a description");
 		nameTBox.setFocus(true);
 		nameTBox.selectAll();

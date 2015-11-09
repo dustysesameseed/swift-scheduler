@@ -33,6 +33,12 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 		userCal = new CalendarWidget();
 		contentTable = new FlexTable();
+		da = new DatePicker();
+
+		prof = new Button("Profile");
+		logout = new Button("Sign Out");
+		contact = new Button("Contact Admin");
+		anchor1 = new Anchor("Emergency Message", "www.osu.edu");
 
 		setLayout();
 	}
@@ -70,12 +76,6 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		Label permissions = new Label("Permissions: " + User.getLevel());
 		left.add(welcome);
 		left.add(permissions);
-
-		prof = new Button("Profile");
-		logout = new Button("Sign Out");
-		da = new DatePicker();
-		contact = new Button("Contact Admin");
-		anchor1 = new Anchor("Emergency Message", "www.osu.edu");
 		left.add(prof);
 		left.add(da);
 		left.add(anchor1);
