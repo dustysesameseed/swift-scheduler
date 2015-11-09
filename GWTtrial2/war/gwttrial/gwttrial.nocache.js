@@ -115,7 +115,7 @@ function computeScriptBase() {
 
   // Compute some codeserver urls so as the user does not need bookmarklets
   var hostName = $wnd.location.hostname;
-  var serverUrl = 'http://' + hostName + ':9876';
+  var serverUrl = 'http://' + hostName + ':61328';
   var nocacheUrl = serverUrl + '/gwttrial/gwttrial.nocache.js';
 
   // Save supder-devmode url in session
