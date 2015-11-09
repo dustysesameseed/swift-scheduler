@@ -1,22 +1,41 @@
 package capstone.gwttrial.client.calendar;
 
+import java.util.Date;
+
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * Calendar Widget contains a Sun-Sat, 8am-4pm calendar widget with a header
+ * that displays the current week. Events are populated using the data in the
+ * CalendarDetails static class.
+ * 
+ * @author Sharon
+ * 
+ */
+
 public class CalendarWidget extends VerticalPanel {
 
 	private FlexTable grid;
+	private String[] dateInfo;
+	private int beginWeek;
+	private int endWeek;
 	private final String[] daysOfWeek = { "Sunday", "Monday", "Tuesday",
 			"Wednesday", "Thursday", "Friday", "Saturday" };
-	private CalendarDetails calendarContent;
 
 	public CalendarWidget() {
 		grid = new FlexTable();
-		calendarContent = new CalendarDetails();
+		dateInfo = parseDate();
 	}
 
-	public void render(String currentWeek) {
+	public CalendarWidget(String username) {
+		grid = new FlexTable();
+		dateInfo = parseDate();
+	}
+
+	public void render() {
 		grid.insertRow(0);
 		grid.insertRow(0);
 		grid.insertRow(0);
@@ -24,7 +43,7 @@ public class CalendarWidget extends VerticalPanel {
 
 		// Set the header cells
 		gridFormatter.setColSpan(0, 0, 8);
-		grid.setText(0, 0, currentWeek);
+		grid.setText(0, 0, getCurrentWeek());
 		gridFormatter.setStyleName(0, 0, "currentMonthCell");
 
 		for (int i = 0; i < 8; i++) {
@@ -56,6 +75,7 @@ public class CalendarWidget extends VerticalPanel {
 			rowTemp++;
 		}
 
+		// Filler cells
 		for (int i = 1; i < 8; i++) {
 			grid.setText(1, i, daysOfWeek[i - 1]);
 		}
@@ -67,8 +87,37 @@ public class CalendarWidget extends VerticalPanel {
 		}
 	}
 
-	public void setCalendarContent() {
+	private String[] parseDate() {
+		Date date = new Date();
+		String dateString = DateTimeFormat.getFormat("EEEE MMM d yyyy").format(
+				date);
+		return dateString.split(" ");
+	}
 
+	private String getCurrentWeek() {
+		String dayOfWeek = dateInfo[0]; // "Monday", "Wednesday"...etc.
+		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
+		String str = dateInfo[1] + " "; // "Nov", "Dec"...etc.
+
+		int numDaysFromSunday = 0;
+		for (int i = 0; i < 7; i++) {
+			if (dayOfWeek.equals(daysOfWeek[i])) {
+				numDaysFromSunday = i;
+				break;
+			}
+		}
+
+		beginWeek = dayOfMonth - numDaysFromSunday;
+		endWeek = dayOfMonth + (6 - numDaysFromSunday);
+		str = str.concat(beginWeek + ", " + dateInfo[3] + " - " + dateInfo[1]
+				+ " " + endWeek + ", " + dateInfo[3]);
+		return str;
+	}
+
+	public void setCalendarContent() {
+		for (EventDetails event : CalendarDetails.getEventList()) {
+			event.getDate();
+		}
 	}
 
 	public FlexTable getCalendar() {

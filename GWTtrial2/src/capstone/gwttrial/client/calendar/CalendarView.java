@@ -2,7 +2,6 @@ package capstone.gwttrial.client.calendar;
 
 import capstone.gwttrial.client.user.User;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -13,7 +12,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.Date;
 import java.util.List;
 
 public class CalendarView extends Composite implements CalendarViewHandler {
@@ -23,18 +21,12 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	private FlexTable contactsTable;
 	private FlexTable contentTable;
 	private final DecoratorPanel parentPanel;
-	private int beginWeek;
-	private int endWeek;
-	private String[] dateInfo;
-	private final String[] daysOfWeek = { "Sunday", "Monday", "Tuesday",
-			"Wednesday", "Thursday", "Friday", "Saturday" };
 
 	public CalendarView() {
 		parentPanel = new DecoratorPanel();
 		initWidget(parentPanel);
 
 		userCal = new CalendarWidget();
-		dateInfo = parseDate();
 		contentTable = new FlexTable();
 
 		setLayout();
@@ -83,7 +75,8 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	}
 
 	private void setCalendar() {
-		userCal.render(getCurrentWeek());
+		userCal.render();
+		// userCal.setCalendarContent();
 		contentTable.setWidget(0, 1, userCal.getCalendar());
 	}
 
@@ -106,33 +99,6 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 			contactsTable.setWidget(i, 0, new CheckBox());
 			contactsTable.setText(i, 1, data.get(i));
 		}
-	}
-
-	private String[] parseDate() {
-		Date date = new Date();
-		String dateString = DateTimeFormat.getFormat("EEEE MMM d yyyy").format(
-				date);
-		return dateString.split(" ");
-	}
-
-	private String getCurrentWeek() {
-		String dayOfWeek = dateInfo[0]; // "Monday", "Wednesday"...etc.
-		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
-		String str = dateInfo[1] + " "; // "Nov", "Dec"...etc.
-
-		int numDaysFromSunday = 0;
-		for (int i = 0; i < 7; i++) {
-			if (dayOfWeek.equals(daysOfWeek[i])) {
-				numDaysFromSunday = i;
-				break;
-			}
-		}
-
-		beginWeek = dayOfMonth - numDaysFromSunday;
-		endWeek = dayOfMonth + (6 - numDaysFromSunday);
-		str = str.concat(beginWeek + ", " + dateInfo[3] + " - " + dateInfo[1]
-				+ " " + endWeek + ", " + dateInfo[3]);
-		return str;
 	}
 
 	public void refresh() {

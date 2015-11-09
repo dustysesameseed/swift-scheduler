@@ -26,6 +26,10 @@ public class CalendarDetails implements Serializable {
 		events.remove(getEventIdx(eventName));
 	}
 
+	public static ArrayList<EventDetails> getEventList() {
+		return events;
+	}
+
 	public static int getEventIdx(String eventName) {
 		int index = 0;
 		boolean found = false;
