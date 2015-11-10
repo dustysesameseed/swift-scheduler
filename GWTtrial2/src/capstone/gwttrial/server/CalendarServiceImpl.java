@@ -1,8 +1,10 @@
 package capstone.gwttrial.server;
 
 import capstone.gwttrial.client.calendar.CalendarDetails;
+import capstone.gwttrial.client.calendar.Constants;
 import capstone.gwttrial.client.calendar.EventDetails;
 import capstone.gwttrial.client.calendar.service.CalendarService;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -18,6 +20,7 @@ public class CalendarServiceImpl extends RemoteServiceServlet implements
 
 		// TODO Pull events from database, serialize and send to user
 		CalendarDetails cal = new CalendarDetails(un);
+		Constants.logger.severe("INSTANTIATING CALENDARDETAILS IN SERVICEIMPL");
 
 		return cal;
 	}

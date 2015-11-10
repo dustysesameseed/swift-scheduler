@@ -3,7 +3,6 @@ package capstone.gwttrial.client.calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -14,8 +13,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * Calendar Widget contains a Sun-Sat, 8am-4pm calendar widget with a header
  * that displays the current week. Events are populated using the data in the
  * CalendarDetails static class.
- * 
- * @author Sharon
  * 
  */
 
@@ -49,12 +46,6 @@ public class CalendarWidget extends VerticalPanel {
 	 * Relates row in table to hours
 	 */
 	private static Map<Integer, Integer> rowHourKey;
-
-	/*
-	 * List of days of the week String constants
-	 */
-	private final String[] daysOfWeek = { "Sunday", "Monday", "Tuesday",
-			"Wednesday", "Thursday", "Friday", "Saturday" };
 
 	/**
 	 * Default constructor for new users
@@ -125,7 +116,7 @@ public class CalendarWidget extends VerticalPanel {
 
 		// Filler cells
 		for (int i = 1; i < 8; i++) {
-			grid.setText(1, i, daysOfWeek[i - 1]);
+			grid.setText(1, i, Constants.daysOfWeek[i - 1]);
 		}
 
 		for (int i = 2; i < 12; i++) {
@@ -133,6 +124,84 @@ public class CalendarWidget extends VerticalPanel {
 				grid.setText(i, j, " ");
 			}
 		}
+	}
+
+	/**
+	 * Populate the calendar with the list of events from the CalendarDetails
+	 * events list
+	 * 
+	 */
+	public void setCalendarContent() {
+		int eventCounter = 1;
+		if (CalendarDetails.getEventList() == null) {
+			Constants.logger
+					.severe("CALENDARWIDGET.JAVA: CALENDAR EVENT LIST IS NULL");
+		} else
+			for (EventDetails event : CalendarDetails.getEventList()) {
+				Constants.logger.severe("EVENT: " + eventCounter);
+				String eventName = event.getName();
+				String date = event.getDate();
+
+				// Get the hour of the event, which corresponds to the row in
+				// the table
+				String startTime = event.getStartTime();
+				int idx = startTime.indexOf(":");
+				startTime = startTime.substring(0, idx);
+				Button newEvent = new Button(eventName);
+				grid.setWidget(getRowFromHour(startTime), 3, newEvent);
+				// int height = newEvent.getParent().getOffsetHeight();
+				// int width = newEvent.getParent().getOffsetWidth();
+				// newEvent.setWidth(width + "%");
+				// newEvent.setHeight(height + "%");
+				eventCounter++;
+			}
+	}
+
+	/**
+	 * Get the current week to be displayed in the header cell
+	 * 
+	 * @return String current week in format "Nov 6, 2015 - Nov 13, 2015"
+	 */
+	private String getCurrentWeek() {
+		String dayOfWeek = dateInfo[0]; // "Monday", "Wednesday"...etc.
+		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
+		String str = dateInfo[1] + " "; // "Nov", "Dec"...etc.
+
+		int numDaysFromSunday = 0;
+		for (int i = 0; i < 7; i++) {
+			if (dayOfWeek.equals(Constants.daysOfWeek[i])) {
+				numDaysFromSunday = i;
+				break;
+			}
+		}
+
+		beginWeek = dayOfMonth - numDaysFromSunday;
+		endWeek = dayOfMonth + (6 - numDaysFromSunday);
+		str = str.concat(beginWeek + ", " + dateInfo[3] + " - " + dateInfo[1]
+				+ " " + endWeek + ", " + dateInfo[3]);
+		return str;
+	}
+
+	/**
+	 * Get the current date and store it into a String array
+	 * 
+	 * @return String[] of current date information in "EEEE MMM d yyyy" format
+	 */
+	private String[] parseDate() {
+		Date date = new Date();
+		String dateString = DateTimeFormat.getFormat("EEEE MMM d yyyy").format(
+				date);
+		return dateString.split(" ");
+	}
+
+	public static Integer getRowFromHour(String hr) {
+		Integer row = -1;
+		for (Integer rowFromMap : rowHourKey.keySet()) {
+			if (rowHourKey.get(rowFromMap).equals(Integer.valueOf(hr))) {
+				row = rowFromMap;
+			}
+		}
+		return row;
 	}
 
 	/**
@@ -156,58 +225,12 @@ public class CalendarWidget extends VerticalPanel {
 		}
 	}
 
-	/**
-	 * Get the current date and store it into a String array
-	 * 
-	 * @return String[] of current date information in "EEEE MMM d yyyy" format
-	 */
-	private String[] parseDate() {
-		Date date = new Date();
-		String dateString = DateTimeFormat.getFormat("EEEE MMM d yyyy").format(
-				date);
-		return dateString.split(" ");
-	}
-
-	/**
-	 * Get the current week to be displayed in the header cell
-	 * 
-	 * @return String current week in format "Nov 6, 2015 - Nov 13, 2015"
-	 */
-	private String getCurrentWeek() {
-		String dayOfWeek = dateInfo[0]; // "Monday", "Wednesday"...etc.
-		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
-		String str = dateInfo[1] + " "; // "Nov", "Dec"...etc.
-
-		int numDaysFromSunday = 0;
-		for (int i = 0; i < 7; i++) {
-			if (dayOfWeek.equals(daysOfWeek[i])) {
-				numDaysFromSunday = i;
-				break;
-			}
-		}
-
-		beginWeek = dayOfMonth - numDaysFromSunday;
-		endWeek = dayOfMonth + (6 - numDaysFromSunday);
-		str = str.concat(beginWeek + ", " + dateInfo[3] + " - " + dateInfo[1]
-				+ " " + endWeek + ", " + dateInfo[3]);
-		return str;
-	}
-
-	public void setCalendarContent() {
-		for (EventDetails event : CalendarDetails.getEventList()) {
-			String eventName = event.getName();
-			String date = event.getDate();
-			Button newEvent = new Button("eventName");
-			grid.setWidget(3, 3, newEvent);
-		}
+	public static Integer getHourFromRow(int row) {
+		return rowHourKey.get(row);
 	}
 
 	public FlexTable getCalendar() {
 		return grid;
-	}
-
-	public static Integer getHourFromRow(int row) {
-		return rowHourKey.get(row);
 	}
 
 	public static String getAmPm() {

@@ -15,7 +15,6 @@ public class CalendarPresenter implements Presenter {
 
 	private final EventBus eventBus;
 	private final CalendarViewHandler viewHandler;
-	private final CalendarDetails userCal;
 	private final String username;
 
 	public CalendarPresenter(EventBus eventBus, CalendarViewHandler view,
@@ -23,9 +22,6 @@ public class CalendarPresenter implements Presenter {
 		this.eventBus = eventBus;
 		this.viewHandler = view;
 		this.username = username;
-
-		// TODO Customize this based on user
-		this.userCal = new CalendarDetails(username);
 	}
 
 	public void bind() {
@@ -46,11 +42,20 @@ public class CalendarPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				Cell src = grid.getCellForEvent(event);
-				int row = src.getRowIndex();
-				int col = src.getCellIndex();
+				if (src != null) {
+					int row = src.getRowIndex();
+					int col = src.getCellIndex();
+					Constants.logger
+							.severe("CALENDARPRESENTER.JAVA: CELL SOURCE ROW, COLUMN: "
+									+ row + "," + col);
 
-				if (row != 0 && row != 1 && col != 0) {
-					eventBus.fireEvent(new CreateEvent(src, "createEvent"));
+					if (row != 0 && row != 1 && col != 0) {
+						eventBus.fireEvent(new CreateEvent(row, col,
+								"createEvent"));
+					}
+				} else {
+					Constants.logger
+							.severe("CALENDARPRESENTER.JAVA: CELL SOURCE FOR CLICKEVENT IS NULL");
 				}
 			}
 		});

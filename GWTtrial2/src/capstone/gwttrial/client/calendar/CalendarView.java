@@ -87,7 +87,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 	private void setCalendar() {
 		userCal.render();
-		// userCal.setCalendarContent();
+		userCal.setCalendarContent();
 		contentTable.setWidget(0, 1, userCal.getCalendar());
 	}
 

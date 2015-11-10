@@ -3,11 +3,11 @@ package capstone.gwttrial.client.doevent;
 import java.util.ArrayList;
 
 import capstone.gwttrial.client.calendar.CalendarWidget;
+import capstone.gwttrial.client.calendar.Constants;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
@@ -20,14 +20,19 @@ public class CreateEventView extends Composite {
 	private Button createButton;
 	private Button cancelButton;
 	private VerticalPanel parentPanel;
-	private Cell src;
+	private int srcRow;
+	private int srcCol;
 
-	public CreateEventView(Cell source) {
+	public CreateEventView() {
+	}
+
+	public CreateEventView(int createEventSrcRow, int createEventSrcCol) {
 		parentPanel = new VerticalPanel();
 		initWidget(parentPanel);
 
 		// Initialize boxes and buttons
-		this.src = source;
+		this.srcRow = createEventSrcRow;
+		this.srcCol = createEventSrcCol;
 
 		createButton = new Button("Create");
 		cancelButton = new Button("Cancel");
@@ -86,12 +91,17 @@ public class CreateEventView extends Composite {
 		TextBox timeTBox = new TextBox();
 		TextBox descTBox = new TextBox();
 
-		if (src != null) {
-			int row = src.getRowIndex();
-			String hr = CalendarWidget.getHourFromRow(row).toString();
+		if (srcRow != -1 && srcCol != -1) {
+			Constants.logger
+					.severe("RETRIEVING HOUR FROM CALENDARWIDGET IN CREATEEVENTVIEW");
+			String hr = CalendarWidget.getHourFromRow(srcRow).toString();
+			Constants.logger.severe("HOUR: " + hr);
 			String amPm = CalendarWidget.getAmPm();
 			timeTBox.setText(hr + ":00" + amPm);
 		} else {
+			Constants.logger
+					.severe("CREATEEVENTVIEW: CELL SOURCE FOR CREATE EVENT HAS ROW, COL: "
+							+ srcRow + "," + srcCol);
 			timeTBox.setText("Enter a time (eg. 5:00 pm)");
 		}
 
@@ -125,6 +135,7 @@ public class CreateEventView extends Composite {
 	}
 
 	public ArrayList<TextBox> getEventDetails() {
+		// TODO: parse input to make sure they are legitimate strings
 		return boxes;
 	}
 
