@@ -3,12 +3,12 @@ package capstone.gwttrial.client.doevent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import capstone.gwttrial.client.Presenter;
+import capstone.gwttrial.client.calendar.CalendarDetails;
+import capstone.gwttrial.client.calendar.Constants;
 import capstone.gwttrial.client.calendar.EventDetails;
-import capstone.gwttrial.client.login.LoginEvent;
 
 public class CreateEventPresenter implements Presenter {
 
@@ -28,7 +28,10 @@ public class CreateEventPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				eventDeets.parseDetails(view.getEventDetails());
-				eventBus.fireEvent(event);
+				CalendarDetails.addEvent(eventDeets);
+				Constants.logger
+						.severe("EVENT DETAILS ADDED TO CALENDAR DETAILS LIST");
+				eventBus.fireEvent(new CreateEvent(-1, -1, "home"));
 			}
 		});
 
@@ -36,7 +39,8 @@ public class CreateEventPresenter implements Presenter {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				eventBus.fireEvent(new LoginEvent("home"));
+				Constants.logger.severe("EVENT CREATION CANCELLED");
+				eventBus.fireEvent(new CreateEvent(-1, -1, "home"));
 			}
 		});
 	}

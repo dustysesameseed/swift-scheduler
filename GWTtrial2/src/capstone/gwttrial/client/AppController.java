@@ -1,7 +1,9 @@
 package capstone.gwttrial.client;
 
+import capstone.gwttrial.client.calendar.CalendarDetails;
 import capstone.gwttrial.client.calendar.CalendarPresenter;
 import capstone.gwttrial.client.calendar.CalendarView;
+import capstone.gwttrial.client.calendar.Constants;
 import capstone.gwttrial.client.doevent.CreateEvent;
 import capstone.gwttrial.client.doevent.CreateEventHandler;
 import capstone.gwttrial.client.doevent.CreateEventPresenter;
@@ -14,45 +16,63 @@ import capstone.gwttrial.client.login.LogoutEvent;
 import capstone.gwttrial.client.login.LogoutEventHandler;
 import capstone.gwttrial.client.user.User;
 
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-
 public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final EventBus eventBus;
 	private HasWidgets container;
 	private String username;
-	private Cell addEventSrc;
+	private int createEventSrcRow;
+	private int createEventSrcCol;
+	private CalendarDetails calDetails;
 
 	public AppController(EventBus eventBus) {
 		this.eventBus = eventBus;
-		this.addEventSrc = null;
+		this.createEventSrcRow = -1;
+		this.createEventSrcCol = -1;
+
+		calDetails = new CalendarDetails(username);
+		Constants.logger
+				.severe("APPCONTROLLER.JAVA: INSTANTIATING CALENDARDETAILS");
 		bind();
 	}
 
 	private void bind() {
 		History.addValueChangeHandler(this);
 
+		// "Sign In" button eventBus handler -- token "login"
 		eventBus.addHandler(LoginEvent.TYPE, new LoginEventHandler() {
 			public void onLogin(LoginEvent event) {
-				createToken("home");
+				Constants.logger
+						.severe("APPCONTROLLER.JAVA: SIGN IN EVENT DETECTED");
+				createToken(event.getId());
 			}
 		});
 
+		// "Sign Out" button eventBus handler -- token "home"
 		eventBus.addHandler(LogoutEvent.TYPE, new LogoutEventHandler() {
 			public void onLogout(LogoutEvent event) {
-				createToken("logout");
+				Constants.logger
+						.severe("APPCONTROLLER.JAVA: SIGN OUT EVENT DETECTED");
+				createToken(event.getId());
 			}
 		});
 
+		// "Create" button eventBus handler (for the CreateEvent view and
+		// CalendarView) -- token "createEvent" or "home"
 		eventBus.addHandler(CreateEvent.TYPE, new CreateEventHandler() {
 			public void onCreateEvent(CreateEvent event) {
-				createToken("addEvent");
-				addEventSrc = event.getEventCell();
+				Constants.logger
+						.severe("APPCONTROLLER.JAVA: CREATE EVENT DETECTED");
+				createEventSrcRow = event.getCellSrcRow();
+				createEventSrcCol = event.getCellSrcCol();
+				Constants.logger.severe("APPCONTROLLER.JAVA: ROW, COL: "
+						+ createEventSrcRow + "," + createEventSrcCol);
+				createToken(event.getId());
 			}
 		});
 	}
@@ -67,12 +87,21 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 	}
 
-	// Create tokens for history and page loads
+	/**
+	 * Create tokens for history and page loads
+	 * 
+	 * @param token
+	 */
 	private void createToken(String token) {
 		History.newItem(token);
 	}
 
-	// Check token and create appropriate presenters
+	/**
+	 * Check token and create appropriate presenters
+	 * 
+	 * @param ValueChangeEvent
+	 *            <String> event
+	 */
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
 
@@ -81,17 +110,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			if (token.equals("login") || token.equals("logout")) {
 				presenter = new LoginPresenter(eventBus, new LoginView(token));
-			}
-
-			else if (token.equals("home")) {
+			} else if (token.equals("home")) {
 				username = User.getUsername();
 				presenter = new CalendarPresenter(eventBus, new CalendarView(),
 						username);
-			}
-
-			else if (token.equals("addEvent")) {
+			} else if (token.equals("createEvent")) {
 				presenter = new CreateEventPresenter(eventBus,
-						new CreateEventView(addEventSrc));
+						new CreateEventView(createEventSrcRow,
+								createEventSrcCol));
 			}
 
 			if (presenter != null) {
@@ -99,5 +125,5 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			}
 		}
 	}
-	
+
 }

@@ -2,10 +2,12 @@ package capstone.gwttrial.client.doevent;
 
 import java.util.ArrayList;
 
+import capstone.gwttrial.client.calendar.CalendarWidget;
+import capstone.gwttrial.client.calendar.Constants;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
@@ -18,16 +20,21 @@ public class CreateEventView extends Composite {
 	private Button createButton;
 	private Button cancelButton;
 	private VerticalPanel parentPanel;
-	private Cell addEventSrc;
+	private int srcRow;
+	private int srcCol;
 
-	public CreateEventView(Cell addEventSrc) {
+	public CreateEventView() {
+	}
+
+	public CreateEventView(int createEventSrcRow, int createEventSrcCol) {
 		parentPanel = new VerticalPanel();
 		initWidget(parentPanel);
 
 		// Initialize boxes and buttons
-		this.addEventSrc = addEventSrc;
+		this.srcRow = createEventSrcRow;
+		this.srcCol = createEventSrcCol;
 
-		createButton = new Button("Add");
+		createButton = new Button("Create");
 		cancelButton = new Button("Cancel");
 
 		configure();
@@ -40,13 +47,12 @@ public class CreateEventView extends Composite {
 		parentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		parentPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 
-		// int time = addEventSrc.getRowIndex();
-
 		// Initialize Labels, Boxes, and Buttons
 		Label header = new Label("Create an Event");
 		Label nameLabel = new Label("Event Name");
 		Label locLabel = new Label("Location");
-		Label dateTimeLabel = new Label("Date/Time");
+		Label dateLabel = new Label("Date");
+		Label timeLabel = new Label("Time");
 		Label descLabel = new Label("Description");
 		configureTextBoxes();
 
@@ -55,22 +61,23 @@ public class CreateEventView extends Composite {
 
 		// Everything goes into a FlexTable
 		FlexTable flexTable = new FlexTable();
-		flexTable.setCellPadding(25);
-		flexTable.setCellSpacing(25);
+		flexTable.setCellPadding(100);
+		flexTable.setCellSpacing(100);
 
 		flexTable.setWidget(0, 0, nameLabel);
 		flexTable.setWidget(1, 0, locLabel);
-		flexTable.setWidget(2, 0, dateTimeLabel);
-		flexTable.setWidget(3, 0, descLabel);
+		flexTable.setWidget(2, 0, dateLabel);
+		flexTable.setWidget(3, 0, timeLabel);
+		flexTable.setWidget(4, 0, descLabel);
 
 		flexTable.setWidget(0, 1, boxes.get(0));
 		flexTable.setWidget(1, 1, boxes.get(1));
 		flexTable.setWidget(2, 1, boxes.get(2));
-		flexTable.setWidget(2, 2, boxes.get(3));
-		flexTable.setWidget(3, 1, boxes.get(4));
+		flexTable.setWidget(3, 1, boxes.get(3));
+		flexTable.setWidget(4, 1, boxes.get(4));
 
-		flexTable.setWidget(4, 3, cancelButton);
-		flexTable.setWidget(4, 4, createButton);
+		flexTable.setWidget(5, 3, cancelButton);
+		flexTable.setWidget(5, 4, createButton);
 
 		// Add the FlexTable to the ParentPanel
 		parentPanel.add(header);
@@ -84,11 +91,45 @@ public class CreateEventView extends Composite {
 		TextBox timeTBox = new TextBox();
 		TextBox descTBox = new TextBox();
 
-		nameTBox.setText("Add the name of your event");
-		locTBox.setText("Enter a location");
-		dateTBox.setText("Enter a date");
-		timeTBox.setText("Enter a time");
+		if (srcRow != -1 && srcCol != -1) {
+			// Use the srcRow to identify which hour was selected
+			Constants.logger
+					.severe("CREATEEVENTVIEW.JAVA: RETRIEVING HOUR FROM CALENDARWIDGET");
+			Constants.logger.severe("HOUR: "
+					+ CalendarWidget.getHourFromRow(srcRow));
+			String hr = CalendarWidget.getHourFromRow(srcRow).toString();
+			String amPm = CalendarWidget.getAmPm();
+			timeTBox.setText(hr + ":00" + amPm);
+
+			// Use the srcCol to identify which day was selected
+			Constants.logger
+					.severe("CREATEEVENTVIEW.JAVA: RETREIVING DAY FROM CALENDARWIDGET");
+			Constants.logger.severe("DAY: "
+					+ CalendarWidget.getDayFromCol(srcCol));
+			String month = CalendarWidget.getCurrentMonthNum().toString();
+			String day = CalendarWidget.getDayFromCol(srcCol).toString();
+			String dateStr = CalendarWidget.getCurrentMonthNum() + "/" + day
+					+ "/" + CalendarWidget.getCurrentYear2();
+			Constants.logger.severe("Date set to: " + dateStr);
+			dateTBox.setText(dateStr);
+
+		} else {
+			Constants.logger
+					.severe("CREATEEVENTVIEW: CELL SOURCE FOR CREATE EVENT HAS ROW, COL: "
+							+ srcRow + "," + srcCol);
+			dateTBox.setText("Enter a date (eg. 11/15/15)");
+			timeTBox.setText("Enter a time (eg. 5:00 pm)");
+		}
+
+		nameTBox.setText("Enter an event name (eg. Team Meeting)");
+		locTBox.setText("Enter a location (eg. Ohio Union)");
 		descTBox.setText("Enter a description");
+
+		nameTBox.setWidth("180%");
+		locTBox.setWidth("180%");
+		dateTBox.setWidth("180%");
+		timeTBox.setWidth("180%");
+		descTBox.setWidth("180%");
 		nameTBox.setFocus(true);
 		nameTBox.selectAll();
 
@@ -109,6 +150,7 @@ public class CreateEventView extends Composite {
 	}
 
 	public ArrayList<TextBox> getEventDetails() {
+		// TODO: parse input to make sure they are legitimate strings
 		return boxes;
 	}
 

@@ -2,10 +2,11 @@ package capstone.gwttrial.client.calendar;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import capstone.gwttrial.client.user.User;
 
 public class CalendarDetails implements Serializable {
-	public ArrayList<EventDetails> events;
+	public static ArrayList<EventDetails> events;
 	public String username;
 	public User user;
 
@@ -18,15 +19,26 @@ public class CalendarDetails implements Serializable {
 		events = new ArrayList<EventDetails>();
 	}
 
-	public void addEvent(EventDetails newEvent) {
-		events.add(newEvent);
+	public static void addEvent(EventDetails newEvent) {
+		if (events == null) {
+			Constants.logger
+					.severe("CALENDARDETAILS.JAVA: EVENTS LIST IS NULL");
+		} else {
+			events.add(newEvent);
+			Constants.logger
+					.severe("CALENDARDETAILS.JAVA: EVENT HAS BEEN ADDED");
+		}
 	}
 
-	public void deleteEvent(String eventName) {
+	public static void deleteEvent(String eventName) {
 		events.remove(getEventIdx(eventName));
 	}
 
-	public int getEventIdx(String eventName) {
+	public static ArrayList<EventDetails> getEventList() {
+		return events;
+	}
+
+	public static int getEventIdx(String eventName) {
 		int index = 0;
 		boolean found = false;
 

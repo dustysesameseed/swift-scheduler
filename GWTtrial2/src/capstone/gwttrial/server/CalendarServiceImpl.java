@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import capstone.gwttrial.client.calendar.CalendarDetails;
+import capstone.gwttrial.client.calendar.Constants;
 import capstone.gwttrial.client.calendar.EventDetails;
 import capstone.gwttrial.client.calendar.service.CalendarService;
 

@@ -33,8 +33,7 @@ public class LoginPresenter implements Presenter {
 				if (validateCredentials()) {
 					// TODO: get user level from server...for now, we are all
 					// normal
-					User.setCurrentUser(display.getUN(), "normal");
-
+					User.setCurrentUser(display.getUN(), "Team Member");
 					rpcLogin.getLoginSuccess(display.getUN(), display.getPW(),
 							new AsyncCallback<Boolean>() {
 
