@@ -85,6 +85,10 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		contentTable.setWidget(0, 0, left);
 	}
 
+	public FlexTable getCalendar() {
+		return userCal.getCalendar();
+	}
+
 	private void setCalendar() {
 		userCal.render();
 		userCal.setCalendarContent();
@@ -97,23 +101,6 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 	public HasClickHandlers getLogoutButton() {
 		return logout;
-	}
-
-	public FlexTable getCalendar() {
-		return userCal.getCalendar();
-	}
-
-	public void setData(List<String> data) {
-		contactsTable.removeAllRows();
-
-		for (int i = 0; i < data.size(); ++i) {
-			contactsTable.setWidget(i, 0, new CheckBox());
-			contactsTable.setText(i, 1, data.get(i));
-		}
-	}
-
-	public void refresh() {
-
 	}
 
 	public Widget asWidget() {

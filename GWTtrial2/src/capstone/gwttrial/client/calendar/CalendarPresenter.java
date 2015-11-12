@@ -1,5 +1,7 @@
 package capstone.gwttrial.client.calendar;
 
+import java.util.Map;
+
 import capstone.gwttrial.client.Presenter;
 import capstone.gwttrial.client.doevent.CreateEvent;
 import capstone.gwttrial.client.login.LogoutEvent;
@@ -7,6 +9,7 @@ import capstone.gwttrial.client.login.LogoutEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
@@ -36,6 +39,18 @@ public class CalendarPresenter implements Presenter {
 				eventBus.fireEvent(new LogoutEvent("logout"));
 			}
 		});
+
+		Map<Button, EventDetails> buttonEvMap = CalendarWidget
+				.getEventButtonMap();
+		if (buttonEvMap != null && !buttonEvMap.isEmpty()) {
+			for (Button button : buttonEvMap.keySet()) {
+				button.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						// eventBus.fireEvent(new EditEvent("edit"));
+					}
+				});
+			}
+		}
 
 		final HTMLTable grid = viewHandler.getCalendar();
 		grid.addClickHandler(new ClickHandler() {

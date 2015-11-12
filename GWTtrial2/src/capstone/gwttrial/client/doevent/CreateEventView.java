@@ -92,22 +92,37 @@ public class CreateEventView extends Composite {
 		TextBox descTBox = new TextBox();
 
 		if (srcRow != -1 && srcCol != -1) {
+			// Use the srcRow to identify which hour was selected
 			Constants.logger
-					.severe("RETRIEVING HOUR FROM CALENDARWIDGET IN CREATEEVENTVIEW");
+					.severe("CREATEEVENTVIEW.JAVA: RETRIEVING HOUR FROM CALENDARWIDGET");
+			Constants.logger.severe("HOUR: "
+					+ CalendarWidget.getHourFromRow(srcRow));
 			String hr = CalendarWidget.getHourFromRow(srcRow).toString();
-			Constants.logger.severe("HOUR: " + hr);
 			String amPm = CalendarWidget.getAmPm();
 			timeTBox.setText(hr + ":00" + amPm);
+
+			// Use the srcCol to identify which day was selected
+			Constants.logger
+					.severe("CREATEEVENTVIEW.JAVA: RETREIVING DAY FROM CALENDARWIDGET");
+			Constants.logger.severe("DAY: "
+					+ CalendarWidget.getDayFromCol(srcCol));
+			String month = CalendarWidget.getCurrentMonthNum().toString();
+			String day = CalendarWidget.getDayFromCol(srcCol).toString();
+			String dateStr = CalendarWidget.getCurrentMonthNum() + "/" + day
+					+ "/" + CalendarWidget.getCurrentYear2();
+			Constants.logger.severe("Date set to: " + dateStr);
+			dateTBox.setText(dateStr);
+
 		} else {
 			Constants.logger
 					.severe("CREATEEVENTVIEW: CELL SOURCE FOR CREATE EVENT HAS ROW, COL: "
 							+ srcRow + "," + srcCol);
+			dateTBox.setText("Enter a date (eg. 11/15/15)");
 			timeTBox.setText("Enter a time (eg. 5:00 pm)");
 		}
 
 		nameTBox.setText("Enter an event name (eg. Team Meeting)");
 		locTBox.setText("Enter a location (eg. Ohio Union)");
-		dateTBox.setText("Enter a date (eg. 11/15/15)");
 		descTBox.setText("Enter a description");
 
 		nameTBox.setWidth("180%");
