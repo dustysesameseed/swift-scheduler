@@ -3,11 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" output="test-classes" path="test"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/d/work/Win10/eclipse/kepler-j2ee/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/gwt-codeserver.jar"/>
-	<classpathentry kind="lib" path="D:/d/work/Win10/eclipse/kepler-j2ee/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/gwt-dev.jar"/>
-	<classpathentry kind="lib" path="D:/d/work/Win10/eclipse/kepler-j2ee/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/gwt-user.jar"/>
-	<classpathentry kind="lib" path="D:/d/work/Win10/eclipse/kepler-j2ee/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/validation-api-1.0.0.GA.jar"/>
-	<classpathentry kind="lib" path="D:/d/work/Win10/eclipse/kepler-j2ee/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/validation-api-1.0.0.GA-sources.jar"/>
-	<classpathentry kind="lib" path="C:/d/system/jump/work/_codespace/Github/swift-scheduler/GWTtrial2/mysql/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/k/Desktop/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/gwt-codeserver.jar"/>
+	<classpathentry kind="lib" path="C:/Users/k/Desktop/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/gwt-dev.jar"/>
+	<classpathentry kind="lib" path="C:/Users/k/Desktop/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/gwt-user.jar"/>
+	<classpathentry kind="lib" path="C:/Users/k/Desktop/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/k/Desktop/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.6.0/gwt-2.6.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/mysql-connector-java-5.1.37-bin.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
