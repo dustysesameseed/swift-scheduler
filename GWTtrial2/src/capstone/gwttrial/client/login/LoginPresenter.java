@@ -34,14 +34,17 @@ public class LoginPresenter implements Presenter {
 					// TODO: get user level from server...for now, we are all
 					// normal
 					User.setCurrentUser(display.getUN(), "normal");
-					// display.getErrorLabel().setText("Login successful");
-					// eventBus.fireEvent(new LoginEvent("home"));
 
 					rpcLogin.getLoginSuccess(display.getUN(), display.getPW(),
 							new AsyncCallback<Boolean>() {
 
 								public void onSuccess(Boolean loggedIn) {
+									if (loggedIn) {
 									eventBus.fireEvent(new LoginEvent("home"));
+									} else {
+										Window.alert("Incorrect username or password.");
+									}
+									
 								}
 
 								public void onFailure(Throwable caught) {

@@ -10,11 +10,13 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class EventDetails implements Serializable {
 	private ArrayList<User> users;
+	private int eventID;
 	private String name;
 	private String location;
 	private String startTime;
 	private String endTime;
 	private String date;
+	private String creator;
 	private String description;
 
 	public EventDetails() {
@@ -22,11 +24,24 @@ public class EventDetails implements Serializable {
 	}
 
 	public EventDetails(String name, String location, String date,
-			String startDate, String startTime, String description) {
+			String startTime, String endTime, String description) {
 		this.name = name;
 		this.location = location;
 		this.date = date;
 		this.startTime = startTime;
+		this.endTime = endTime;
+		this.description = description;
+	}
+	
+	public EventDetails(int eventID, String name, String location, String start,
+			String end, String creator, String description) {
+		// These are the variables stored in the database for an event
+		this.eventID = eventID;
+		this.name = name;
+		this.location = location;
+		this.startTime = start;
+		this.endTime = end;
+		this.creator = creator;
 		this.description = description;
 	}
 
@@ -76,5 +91,9 @@ public class EventDetails implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getEventID() {
+		return eventID;
 	}
 }
