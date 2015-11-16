@@ -14,7 +14,7 @@ public interface CalendarService extends RemoteService {
 	CalendarDetails getCalendarEvents(String un)
 			throws IllegalArgumentException;
 
-	Boolean addCalendarEvent(EventDetails event)
+	int addCalendarEvent(EventDetails event)
 			throws IllegalArgumentException;
 
 	Boolean removeCalendarEvent(EventDetails event)
