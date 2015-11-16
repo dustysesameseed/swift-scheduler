@@ -12,7 +12,7 @@ public interface CalendarServiceAsync {
 	void getCalendarEvents(String un, AsyncCallback<CalendarDetails> callback)
 			throws IllegalArgumentException;
 
-	void addCalendarEvent(EventDetails event, AsyncCallback<Boolean> callback)
+	void addCalendarEvent(EventDetails event, AsyncCallback<Integer> callback)
 			throws IllegalArgumentException;
 
 	void removeCalendarEvent(EventDetails event, AsyncCallback<Boolean> callback)
