@@ -30,26 +30,34 @@ public class CalendarServiceImpl extends RemoteServiceServlet implements
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		CalendarDetails cal = new CalendarDetails(un);
+		Boolean noDatabaseMode = true;
 		try {
-			 Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection("jdbc:mysql://localhost/swiftdb?" + "user=root&password=pass");
 		
 			
-		 preparedStatement = connect.prepareStatement("SELECT * FROM Events)");
-		 resultSet = preparedStatement.executeQuery();
-		 while (resultSet.next()) {
-		 int eventID = resultSet.getInt(1);
-		 String name = resultSet.getString(2);
-		 String location = resultSet.getString(3);
-		 String start = resultSet.getDate(4).toString();
-		 String end = resultSet.getDate(5).toString();
-		 String creator = resultSet.getString(6);
-		 String description = resultSet.getString(7);
-		 EventDetails event = new EventDetails(eventID,name,location,start,end,creator,description);
-		 cal.addEvent(event);
-		 }
+			preparedStatement = connect.prepareStatement("SELECT * FROM Events)");
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				int eventID = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				String location = resultSet.getString(3);
+				String start = resultSet.getDate(4).toString();
+				String end = resultSet.getDate(5).toString();
+				String creator = resultSet.getString(6);
+				String description = resultSet.getString(7);
+				EventDetails event = new EventDetails(eventID,name,location,start,end,creator,description);
+				cal.addEvent(event);
+			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+		if (noDatabaseMode){
+			EventDetails event1 = new EventDetails(1,"Event1","Place1,"
+					,"2015-11-21 12:00:00", "2015-11-21 13:00:00",un,"First event");
+			EventDetails event2 = new EventDetails(2,"Event2","Place2,"
+					,"2015-11-22 14:00:00", "2015-11-22 15:00:00",un,"Second event");
+			cal.addEvent(event1); cal.addEvent(event2);
 		}
 		return cal;
 	}
@@ -64,29 +72,30 @@ public class CalendarServiceImpl extends RemoteServiceServlet implements
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		int eventID = -1;
+		Boolean noDatabaseMode = true;
 		
 		try {
-			 Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection("jdbc:mysql://localhost/swiftdb?" + "user=root&password=pass");
 		
 			
-		 preparedStatement = connect.prepareStatement("INSERT INTO Events VALUES (default"
+			preparedStatement = connect.prepareStatement("INSERT INTO Events VALUES (default"
 		 		+ ",'"+event.getName()
 		 		+ "','"+event.getLocation()
 		 		+ "','"+java.sql.Date.valueOf(event.getDate())
 		 		+ "','"+java.sql.Date.valueOf(event.getDate())
 		 		+ "','username"
 		 		+ "','"+event.getDescription()+"');");
-		 resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 		 
-		 preparedStatement = connect.prepareStatement("SELECT COUNT(*) FROM Events;");
-		 resultSet = preparedStatement.executeQuery();
-		 resultSet.next();
-		 eventID = resultSet.getInt(1);
+			preparedStatement = connect.prepareStatement("SELECT COUNT(*) FROM Events;");
+			resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			eventID = resultSet.getInt(1);
 		} catch (SQLException | ClassNotFoundException e) {
-				e.printStackTrace();
+			e.printStackTrace();
 		}
-		
+		if (noDatabaseMode) eventID = event.getEventID();
 		return eventID;
 	}
 
@@ -97,21 +106,22 @@ public class CalendarServiceImpl extends RemoteServiceServlet implements
 		// Remove event from database, return success
 		Connection connect = null;
 		PreparedStatement preparedStatement = null;
-		Boolean removed = true;
+		Boolean removed = false;
+		Boolean noDatabaseMode = true;
 		
 		try {
-			 Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection("jdbc:mysql://localhost/swiftdb?" + "user=root&password=pass");
 		
 			
-		 preparedStatement = connect.prepareStatement("DELETE FROM Events WHERE eventIDe='"+event.getEventID()+"';");
-		 preparedStatement.executeQuery();
-		 removed = true;
+			preparedStatement = connect.prepareStatement("DELETE FROM Events WHERE eventIDe='"+event.getEventID()+"';");
+			preparedStatement.executeQuery();
+			removed = true;
 				 
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		if (noDatabaseMode) removed = true;
 		return removed;
 	}
 

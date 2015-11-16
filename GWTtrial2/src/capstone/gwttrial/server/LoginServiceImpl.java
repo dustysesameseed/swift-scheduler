@@ -28,6 +28,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 		 PreparedStatement preparedStatement = null;
 		 ResultSet resultSet = null;
 		 Boolean exists = false;
+		 Boolean noDatabaseMode = true;
 		 
 		 try {
 			 Class.forName("com.mysql.jdbc.Driver");
@@ -41,6 +42,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	} catch (SQLException | ClassNotFoundException e) {
 					e.printStackTrace();
 		}
+		if (noDatabaseMode) exists = true;
 		
 		return exists;
 	}

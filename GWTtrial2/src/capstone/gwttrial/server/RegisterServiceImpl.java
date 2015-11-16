@@ -27,6 +27,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 			 PreparedStatement preparedStatement = null;
 			 ResultSet resultSet = null;
 			 Boolean exists = false;
+			 Boolean noDatabaseMode = true;
 			 
 			 try {
 				 Class.forName("com.mysql.jdbc.Driver");
@@ -41,7 +42,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 		} catch (SQLException | ClassNotFoundException e) {
 						e.printStackTrace();
 			}
-			
+			if (noDatabaseMode) exists = true;
 			return exists;
 		}
 	}
