@@ -3,6 +3,7 @@
 # Package Files #
 *.jar
 *.war
+!mysql-connector-java-5.1.37-bin.jar
 
 # Eclipse workspace stuff #
 .metadata/
