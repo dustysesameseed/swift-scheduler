@@ -2,17 +2,24 @@ package capstone.gwttrial.client.login;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class LoginView extends Composite {
+
 	private VerticalPanel vertPanel;
+	
 	private Label header;
 	private Label loginMsg;
 	private Label errorLabel;
@@ -21,9 +28,12 @@ public class LoginView extends Composite {
 	private Button signInButton;
 	private String token;
 	private Button registerButton;
+	private Image hpimg;
+	
 
 	public LoginView(String token) {
 		vertPanel = new VerticalPanel();
+		
 		initWidget(vertPanel);
 
 		this.token = token;
@@ -36,6 +46,8 @@ public class LoginView extends Composite {
 		pwField = new PasswordTextBox();
 		signInButton = new Button("Sign In");
 		registerButton = new Button("Need an account? Register here!");
+		hpimg = new Image("hpp.jpg");
+		
 
 		// Configure Labels, Boxes, and Buttons
 		configure();
@@ -49,6 +61,7 @@ public class LoginView extends Composite {
 		errorLabel.setStyleName("serverResponseLabelError");
 		unField.setText("Username");
 		pwField.setText("Password");
+		hpimg.setStyleName("hpimg");
 
 		// Focus the cursor on the name field when the app loads
 		unField.setFocus(true);
@@ -62,6 +75,7 @@ public class LoginView extends Composite {
 		flexTable.setWidget(2, 2, signInButton);
 		flexTable.setWidget(3, 0, errorLabel);
 		flexTable.setWidget(5, 0, registerButton);
+		flexTable.setWidget(6, 0, hpimg);
 
 		if (token.equals("logout")) {
 			Label logoutLabel = new Label("You have been logged out");
@@ -74,12 +88,17 @@ public class LoginView extends Composite {
 		vertPanel.setSize("100%", "100%");
 		vertPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vertPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-
+        
+		
 		// Add header and table to verticalPanel
+		
+		
 		vertPanel.add(header);
 		vertPanel.add(flexTable);
+		
 	}
 
+	
 	public Button getSignInButton() {
 		return signInButton;
 	}

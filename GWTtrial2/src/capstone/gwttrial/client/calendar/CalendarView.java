@@ -38,7 +38,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		prof = new Button("Profile");
 		logout = new Button("Sign Out");
 		contact = new Button("Contact Admin");
-		anchor1 = new Anchor("Emergency Message", "www.osu.edu");
+		anchor1 = new Anchor("Emergency Message", "emer.html");
 
 		setLayout();
 	}
