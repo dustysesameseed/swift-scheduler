@@ -1,6 +1,7 @@
 package capstone.gwttrial.client.login;
 
 import capstone.gwttrial.client.Presenter;
+import capstone.gwttrial.client.calendar.Constants;
 import capstone.gwttrial.client.login.service.LoginService;
 import capstone.gwttrial.client.login.service.LoginServiceAsync;
 import capstone.gwttrial.client.user.User;
@@ -33,28 +34,31 @@ public class LoginPresenter implements Presenter {
 				eventBus.fireEvent(new LoginEvent("register"));
 			}
 		});
-		
+
 		display.getSignInButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (validateCredentials()) {
-					// TODO: get user level from server...for now, we are all
-					// normal
 					User.setCurrentUser(display.getUN(), "Team Member");
 					rpcLogin.getLoginSuccess(display.getUN(), display.getPW(),
 							new AsyncCallback<Boolean>() {
 
 								public void onSuccess(Boolean loggedIn) {
 									if (loggedIn) {
-									eventBus.fireEvent(new LoginEvent("home"));
+										eventBus.fireEvent(new LoginEvent(
+												"home"));
 									} else {
 										Window.alert("Incorrect username or password.");
+										Constants.logger
+												.severe("LOGINPRESENTER.JAVA: INCORRECT UN/PW");
 									}
-									
+
 								}
 
 								public void onFailure(Throwable caught) {
 									Window.alert("Failure on login attempt.");
+									Constants.logger
+											.severe("LOGINPRESENTER.JAVA: LOGIN FAILURE");
 								}
 							});
 

@@ -157,8 +157,8 @@ public class CalendarWidget extends VerticalPanel {
 
 		// Add style to highlight the current day of the week
 		for (int i = 1; i < 8; i++) {
-			grid.setText(1, i, Constants.daysOfWeek[i - 1]);
-			if (Constants.daysOfWeek[i - 1].equals(day)) {
+			grid.setText(1, i, Constants.DAYS_OF_WEEK[i - 1]);
+			if (Constants.DAYS_OF_WEEK[i - 1].equals(day)) {
 				gridFormatter.addStyleName(1, i, "serverResponseLabelError");
 				grid.getColumnFormatter().addStyleName(i,
 						"serverResponseLabelError");
@@ -253,21 +253,39 @@ public class CalendarWidget extends VerticalPanel {
 		String dayOfWeek = dateInfo[0]; // "Monday", "Wednesday"...etc.
 		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
 		String str = dateInfo[1] + " "; // "Nov", "Dec"...etc.
+		String currentMonth = dateInfo[1];
 
 		// Find the number of days from the start of the week (Sunday) to the
 		// current date
 		int numDaysFromSunday = 0;
 		for (int i = 0; i < 7; i++) {
-			if (dayOfWeek.equals(Constants.daysOfWeek[i])) {
+			if (dayOfWeek.equals(Constants.DAYS_OF_WEEK[i])) {
 				numDaysFromSunday = i;
 				break;
 			}
 		}
 
+		// Calculate if the end of the week is set to a number greater than the
+		// number of days in the current month
+		int tempEndWeek = dayOfMonth + (6 - numDaysFromSunday);
+		int currentMoDays = Constants.MONTHS_TO_TOTALDAYS_MAP.get(str);
+
+		if (endWeek < currentMoDays) {
+			endWeek = tempEndWeek;
+		} else {
+			endWeek = tempEndWeek - currentMoDays;
+			// If the end of the week extends into the next month, make sure the
+			// next month is displayed too
+			for (int i = 0; i < Constants.MONTHS.length; i++) {
+				if (Constants.MONTHS[i].equals(currentMonth)) {
+					currentMonth = Constants.MONTHS[i + 1];
+				}
+			}
+		}
+
 		// Construct the week string for the header cell
 		beginWeek = dayOfMonth - numDaysFromSunday;
-		endWeek = dayOfMonth + (6 - numDaysFromSunday);
-		str = str.concat(beginWeek + ", " + dateInfo[3] + " - " + dateInfo[1]
+		str = str.concat(beginWeek + ", " + dateInfo[3] + " - " + currentMonth
 				+ " " + endWeek + ", " + dateInfo[3]);
 		return str;
 	}

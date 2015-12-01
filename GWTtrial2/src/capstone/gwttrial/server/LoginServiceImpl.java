@@ -1,5 +1,6 @@
 package capstone.gwttrial.server;
 
+import capstone.gwttrial.client.calendar.Constants;
 import capstone.gwttrial.client.login.service.LoginService;
 import capstone.gwttrial.shared.FieldVerifier;
 
@@ -21,31 +22,36 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 		LoginService {
 
 	@Override
-	public Boolean getLoginSuccess(String un, String pw) throws IllegalArgumentException {
-		
-		//Make sure username/password combo is in database, create session instance server-side		
-		 Connection connect = null;
-		 PreparedStatement preparedStatement = null;
-		 ResultSet resultSet = null;
-		 Boolean exists = false;
-		 Boolean noDatabaseMode = true;
-		 
-		 try {
-			 Class.forName("com.mysql.jdbc.Driver");
-			connect = DriverManager.getConnection("jdbc:mysql://localhost/swiftdb?" + "user=root&password=pass");
-		
-			
-		 preparedStatement = connect.prepareStatement("SELECT EXISTS(SELECT * FROM Users WHERE username='" + un+ "' AND password='"+pw+"');");
-		 resultSet = preparedStatement.executeQuery();
-		 resultSet.next();
-		 exists = resultSet.getBoolean(1);
-	} catch (SQLException | ClassNotFoundException e) {
-					e.printStackTrace();
+	public Boolean getLoginSuccess(String un, String pw)
+			throws IllegalArgumentException {
+
+		// Make sure username/password combo is in database, create session
+		// instance server-side
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Boolean exists = false;
+		Boolean noDatabaseMode = true;
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager
+					.getConnection("jdbc:mysql://localhost/swiftdb?"
+							+ "user=root&password=pass");
+
+			preparedStatement = connect
+					.prepareStatement("SELECT EXISTS(SELECT * FROM Users WHERE username='"
+							+ un + "' AND password='" + pw + "');");
+			resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			exists = resultSet.getBoolean(1);
+		} catch (SQLException | ClassNotFoundException e) {
+			Constants.logger.severe("LOGINSERVICEIMPL.JAVA: COULD NOT LOG IN");
+			e.printStackTrace();
 		}
-		if (noDatabaseMode) exists = true;
-		
+		if (noDatabaseMode)
+			exists = true;
+
 		return exists;
 	}
-	
-
 }
