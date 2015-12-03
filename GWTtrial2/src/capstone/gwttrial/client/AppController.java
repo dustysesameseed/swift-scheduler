@@ -14,6 +14,10 @@ import capstone.gwttrial.client.login.LoginPresenter;
 import capstone.gwttrial.client.login.LoginView;
 import capstone.gwttrial.client.login.LogoutEvent;
 import capstone.gwttrial.client.login.LogoutEventHandler;
+import capstone.gwttrial.client.register.RegisterEvent;
+import capstone.gwttrial.client.register.RegisterEventHandler;
+import capstone.gwttrial.client.register.RegisterPresenter;
+import capstone.gwttrial.client.register.RegisterView;
 import capstone.gwttrial.client.user.User;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -49,6 +53,15 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onLogin(LoginEvent event) {
 				Constants.logger
 						.severe("APPCONTROLLER.JAVA: SIGN IN EVENT DETECTED");
+				createToken(event.getId());
+			}
+		});
+		
+		// "Register" button eventBus handler -- token "register"
+		eventBus.addHandler(RegisterEvent.TYPE, new RegisterEventHandler() {
+			public void onRegister(RegisterEvent event) {
+				Constants.logger
+						.severe("APPCONTROLLER.JAVA: REGISTER EVENT DETECTED");
 				createToken(event.getId());
 			}
 		});
@@ -118,6 +131,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				presenter = new CreateEventPresenter(eventBus,
 						new CreateEventView(createEventSrcRow,
 								createEventSrcCol));
+			} else if (token.equals("register")) {
+				presenter = new RegisterPresenter(eventBus, new RegisterView(token));
 			}
 
 			if (presenter != null) {

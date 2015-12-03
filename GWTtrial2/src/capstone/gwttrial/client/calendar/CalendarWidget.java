@@ -259,7 +259,7 @@ public class CalendarWidget extends VerticalPanel {
 		String beginMonth = dateInfo[1]; // "Nov", "Dec"...etc.
 		String endMonth = dateInfo[1];
 		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
-
+		
 		// Find the number of days from the start of the week (Sunday) to the
 		// current date
 		int numDaysFromSunday = 0;

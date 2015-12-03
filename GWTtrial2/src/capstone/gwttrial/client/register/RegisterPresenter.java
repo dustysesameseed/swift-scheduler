@@ -1,9 +1,8 @@
-package capstone.gwttrial.client.login;
+package capstone.gwttrial.client.register;
 
 import capstone.gwttrial.client.Presenter;
-import capstone.gwttrial.client.calendar.Constants;
-import capstone.gwttrial.client.login.service.LoginService;
-import capstone.gwttrial.client.login.service.LoginServiceAsync;
+import capstone.gwttrial.client.register.service.RegisterService;
+import capstone.gwttrial.client.register.service.RegisterServiceAsync;
 import capstone.gwttrial.client.user.User;
 import capstone.gwttrial.shared.FieldVerifier;
 
@@ -15,50 +14,40 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-public class LoginPresenter implements Presenter {
+public class RegisterPresenter implements Presenter {
 
 	private final EventBus eventBus;
-	private final LoginView display;
-	private final LoginServiceAsync rpcLogin;
+	private final RegisterView display;
+	private final RegisterServiceAsync rpcLogin;
 
-	public LoginPresenter(EventBus eventBus, LoginView loginView) {
+	public RegisterPresenter(EventBus eventBus, RegisterView loginView) {
 		this.eventBus = eventBus;
 		this.display = loginView;
-		this.rpcLogin = GWT.create(LoginService.class);
+		this.rpcLogin = GWT.create(RegisterService.class);
 	}
 
 	private void bind() {
-		display.getregisterButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				eventBus.fireEvent(new LoginEvent("register"));
-			}
-		});
-
-		display.getSignInButton().addClickHandler(new ClickHandler() {
+		display.getRegisterButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (validateCredentials()) {
+					// TODO: get user level from server...for now, we are all
+					// normal
 					User.setCurrentUser(display.getUN(), "Team Member");
-					rpcLogin.getLoginSuccess(display.getUN(), display.getPW(),
+					rpcLogin.getRegisterSuccess(display.getUN(), display.getPW(),
 							new AsyncCallback<Boolean>() {
 
-								public void onSuccess(Boolean loggedIn) {
-									if (loggedIn) {
-										eventBus.fireEvent(new LoginEvent(
-												"home"));
+								public void onSuccess(Boolean registered) {
+									if (registered) {
+									eventBus.fireEvent(new RegisterEvent("home"));
 									} else {
-										Window.alert("Incorrect username or password.");
-										Constants.logger
-												.severe("LOGINPRESENTER.JAVA: INCORRECT UN/PW");
+										Window.alert("Invalid username or password.");
 									}
-
+									
 								}
 
 								public void onFailure(Throwable caught) {
-									Window.alert("Failure on login attempt.");
-									Constants.logger
-											.severe("LOGINPRESENTER.JAVA: LOGIN FAILURE");
+									Window.alert("Failure on register attempt.");
 								}
 							});
 

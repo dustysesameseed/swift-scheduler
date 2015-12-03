@@ -3,6 +3,7 @@
 # Package Files #
 *.jar
 *.war
+!mysql-connector-java-5.1.37-bin.jar
 
 # Eclipse workspace stuff #
 .metadata/
@@ -20,7 +21,8 @@ GWTtrial/.apt_generated/
 */*/WEB-INF/classes/
 */test-classes/
 */war/gwttrial
-
+*/mysql
+*/war/WEB-INF/lib/mysql-connector-java-5.1.37/
 
 #compilation logs
 GWTtrial/.gwt/
