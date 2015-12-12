@@ -122,6 +122,10 @@ td.contacts-ListName {
 	text-decoration: none;
 }
 
+.selectedColumn {
+	background: #2C3B86;
+}
+
 /** Add css rules here for your application. */
 .contacts-ListRow td {
 	border-bottom: 1px solid #E2E2E2;

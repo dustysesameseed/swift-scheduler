@@ -1,10 +1,13 @@
 package capstone.gwttrial.client.calendar;
 
-import capstone.gwttrial.client.user.User;
+import java.util.Date;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -13,16 +16,16 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
-import com.google.gwt.user.client.ui.Anchor;
-import java.util.List;
+
+import capstone.gwttrial.client.user.User;
 
 public class CalendarView extends Composite implements CalendarViewHandler {
 	private CalendarWidget userCal;
 	private Button prof;
 	private Button logout;
 	private DatePicker da;
-	private Button contact;
 	private Anchor anchor1;
+	private Anchor anchor2;
 	private FlexTable contactsTable;
 	private FlexTable contentTable;
 	private final DecoratorPanel parentPanel;
@@ -37,10 +40,24 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 		prof = new Button("Profile");
 		logout = new Button("Sign Out");
-		contact = new Button("Contact Admin");
-		anchor1 = new Anchor("Emergency Message", "emer.html");
+		anchor1 = new Anchor("Important Message", "emergency.html");
+		anchor2 = new Anchor("Contact Admin", "contact.html");
 
 		setLayout();
+	
+		// Funtionality of Datepicker Click to Calendar Highlight
+		// Highlight specific day in Calendarview while click the corresponding one in Datepicker
+		da.addValueChangeHandler(new ValueChangeHandler<Date>(){
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				Date date = da.getHighlightedDate();
+				int dayOfWeek = date.getDay();  // Stilling working although deprecated
+				//Window.alert(Integer.toString(dayOfWeek));
+				for (int i = 1; i<8; i++){
+					userCal.getCalendar().getColumnFormatter().setStyleName(i, "");
+				}
+				userCal.getCalendar().getColumnFormatter().setStyleName(dayOfWeek+1, "selectedColumn");
+			}});
 	}
 
 	private void setLayout() {
@@ -79,7 +96,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		left.add(prof);
 		left.add(da);
 		left.add(anchor1);
-		left.add(contact);
+		left.add(anchor2);
 		left.add(logout);
 		contentTable.getCellFormatter().addStyleName(0, 0, "calendar-LeftCell");
 		contentTable.setWidget(0, 0, left);

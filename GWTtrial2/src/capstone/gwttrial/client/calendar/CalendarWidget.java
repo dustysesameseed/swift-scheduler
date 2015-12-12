@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -69,6 +68,9 @@ public class CalendarWidget extends VerticalPanel {
 	private int cellHeight;
 	private int cellWidth;
 
+	private boolean spansTwoMonths;
+	private int colOfMonthChange;
+
 	/**
 	 * Default constructor for new users
 	 * 
@@ -82,6 +84,8 @@ public class CalendarWidget extends VerticalPanel {
 		gridFormatter = grid.getFlexCellFormatter();
 		cellHeight = 200;
 		cellWidth = 200;
+		spansTwoMonths = false;
+		colOfMonthChange = -1;
 	}
 
 	/**
@@ -99,6 +103,8 @@ public class CalendarWidget extends VerticalPanel {
 		gridFormatter = grid.getFlexCellFormatter();
 		cellHeight = 200;
 		cellWidth = 200;
+		spansTwoMonths = false;
+		colOfMonthChange = -1;
 	}
 
 	/**
@@ -150,10 +156,20 @@ public class CalendarWidget extends VerticalPanel {
 
 		// Populate header row 1 with days of the week
 		// Populate column-to-day map also
+		int counter = 1;
 		String day = dateInfo[0];
 		for (int i = 1; i < 8; i++) {
 			gridFormatter.setStyleName(1, i, "daysOfTheWeekCells");
-			colToDayMap.put(i, beginWeek + i - 1);
+			if (spansTwoMonths && i >= colOfMonthChange) {
+				colToDayMap.put(i, counter);
+				Constants.logger.severe("ADDING TO COLDAYMAP: " + i + ","
+						+ counter);
+				counter++;
+			} else {
+				colToDayMap.put(i, beginWeek + i - 1);
+				Constants.logger.severe("ADDING TO COLDAYMAP: " + i + ","
+						+ (beginWeek + i - 1));
+			}
 		}
 
 		// Add style to highlight the current day of the week
@@ -223,11 +239,18 @@ public class CalendarWidget extends VerticalPanel {
 				Constants.logger
 						.severe("CALENDARWIDGET.JAVA: DAY OF EVENT ENTERED WAS: "
 								+ dayOfMonth);
-				if ((beginWeek <= dayOfMonth && dayOfMonth <= endWeek)
-						&& (beginWeek < endWeek)) {
+
+				if (colToDayMap.containsValue(dayOfMonth)) {
 					// Calculate how many days from the beginning of the week,
 					// which should correlate to columns
-					eventCol = dayOfMonth - beginWeek + 1;
+					for (Integer key : colToDayMap.keySet()) {
+						if (colToDayMap.get(key) == dayOfMonth) {
+							eventCol = key;
+							Constants.logger
+									.severe("CALENDARWIDGET.JAVA: THE EVENT COL IS: "
+											+ eventCol);
+						}
+					}
 
 					// Create a new button for the event to be displayed
 					Button newEvent = new Button(eventName + "<br/>"
@@ -259,7 +282,7 @@ public class CalendarWidget extends VerticalPanel {
 		String beginMonth = dateInfo[1]; // "Nov", "Dec"...etc.
 		String endMonth = dateInfo[1];
 		int dayOfMonth = Integer.parseInt(dateInfo[2]); // 0-31
-		
+
 		// Find the number of days from the start of the week (Sunday) to the
 		// current date
 		int numDaysFromSunday = 0;
@@ -291,38 +314,37 @@ public class CalendarWidget extends VerticalPanel {
 					endMonth = Constants.MONTHS[i + 1];
 				}
 			}
-			// Case 2: The current day is in the old month. Calculate if the
-			// beginning of the week is set to a number <= 0, and if so, then
-			// set it
-			// to the old month range
-			beginWeek = dayOfMonth - numDaysFromSunday;
-			if (beginWeek <= 0) {
-				for (int i = 0; i < Constants.MONTHS.length; i++) {
-					if (Constants.MONTHS[i].equals(beginMonth)) {
-						beginMonth = Constants.MONTHS[i - 1];
-					}
-				}
-				// Find out the number of days the previous month had in it
-				int prevMonthDays = Constants.MONTHS_TO_TOTALDAYS_MAP
-						.get(beginMonth);
-				// If the beginning of the week is the end of the last month,
-				// set
-				// the beginning of the week day to the last day of the previous
-				// month, else offset the last day
-				if (beginWeek == 0) {
-					beginWeek = prevMonthDays;
-				} else {
-					beginWeek = prevMonthDays + beginWeek;
+		}
+
+		// Case 2: The current day is in the new month. Calculate if the
+		// beginning of the week is set to a number <= 0, and if so, then
+		// set it to the old month range
+		beginWeek = dayOfMonth - numDaysFromSunday;
+		if (beginWeek <= 0) {
+			for (int i = 0; i < Constants.MONTHS.length; i++) {
+				if (Constants.MONTHS[i].equals(beginMonth)) {
+					beginMonth = Constants.MONTHS[i - 1];
 				}
 			}
+			// Find out the number of days the previous month had in it
+			int prevMonthDays = Constants.MONTHS_TO_TOTALDAYS_MAP
+					.get(beginMonth);
+			// If the beginning of the week is the end of the last month,
+			// set the beginning of the week day to the last day of the
+			// previous month, else offset the last day
+			if (beginWeek == 0) {
+				beginWeek = prevMonthDays;
+			} else {
+				beginWeek = prevMonthDays + beginWeek;
+			}
+
 			// Don't forget to update the column-to-day map!!
 			Constants.logger.severe("UPDATING THE COLUMN_TO_DAY MAP");
-			int temp = 7;
-			for (int i = endWeek; i > 0; i--) {
-				colToDayMap.remove(temp);
-				colToDayMap.put(temp, i);
-				temp--;
-			}
+
+			// The start index of the day-columns that need to be
+			// updated in the map
+			colOfMonthChange = prevMonthDays - beginWeek + 2;
+			spansTwoMonths = true;
 		}
 
 		// Construct the week string for the header cell
