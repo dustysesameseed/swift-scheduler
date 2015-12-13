@@ -21,179 +21,24 @@ th,td {
 	padding: 0px;
 }
 
-td.add-contact-label {
-	text-align: left;
-}
-
-add-contact-input {
-	border: 1px solid red;
-	border-collapse: collapse;
-	margin-right: 0px;
-	margin-left: auto;
-}
-
-td.contacts-NavContainer {
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
 td.calendar-LeftCell {
 	background-color: #D0E4F6;
 	padding-bottom: 6px;
 }
 
-td.contacts-ListContainer {
+td.calendar-ListContainer {
 	padding-right: 10px;
 	height: 100%;
 	width: 20%;
 }
 
-.contacts-HeaderContainer {
-	padding-right: 10px;
-}
-
-td.contacts-ListCheckbox {
-	padding-right: 4px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-
-td.contacts-ListName {
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-
-.gwt-DecoratorPanel .middleCenter {
+.gwt-DecoratorPanel.middleCenter {
 	height: 100%;
 	width: 100%;
-}
-
-/** Example rules used by the template application (remove for your app) */
-.header {
-	font-size: 2em;
-	font-weight: bold;
-	color: #777777;
-	margin: 40px 0px 70px;
-	text-align: center;
-}
-
-.welcome {
-	font-size: 15pt;
-	font-family: fantasy;
-	font-weight: 400;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-
-.currentMonthCell {
-	font-stretch: expanded;
-	font-size: xx-large;
-	font-family: fantasy;
-	font-weight: bold;
-	text-align: center;
-	height: 10%;
-}
-
-.daysOfTheWeekCells {
-	font-stretch: expanded;
-	font-size: large;
-	font-family: fantasy;
-	font-weight: bold;
-	text-align: center;
-	height: 9%;
-}
-
-.signInButton {
-	background: #3498db;
-	background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
-	background-image: -moz-linear-gradient(top, #3498db, #2980b9);
-	background-image: -ms-linear-gradient(top, #3498db, #2980b9);
-	background-image: -o-linear-gradient(top, #3498db, #2980b9);
-	background-image: linear-gradient(to bottom, #3498db, #2980b9);
-	-webkit-border-radius: 28;
-	-moz-border-radius: 28;
-	border-radius: 28px;
-	font-family: Arial;
-	color: #000000;
-	font-size: 26px;
-	padding: 10px 20px 10px 20px;
-	text-decoration: none;
 }
 
 .selectedColumn {
-	background: #2C3B86;
-}
-
-/** Add css rules here for your application. */
-.contacts-ListRow td {
-	border-bottom: 1px solid #E2E2E2;
-}
-
-table {
-	border-collapse: collapse;
-	margin: 0px;
-	padding: 0px;
-	spacing: 0px;
-}
-
-td {
-	border-collapse: collapse;
-	margin: 0px;
-	padding: 0px;
-	spacing: 0px;
-}
-
-th,td {
-	padding: 0px;
-}
-
-td.add-contact-label {
-	text-align: left;
-}
-
-add-contact-input {
-	border: 1px solid red;
-	border-collapse: collapse;
-	margin-right: 0px;
-	margin-left: auto;
-}
-
-td.contacts-NavContainer {
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-td.calendar-LeftCell {
-	background-color: #D0E4F6;
-	padding-bottom: 6px;
-}
-
-td.contacts-ListContainer {
-	padding-right: 10px;
-	height: 100%;
-	width: 20%;
-}
-
-.contacts-HeaderContainer {
-	padding-right: 10px;
-}
-
-td.contacts-ListCheckbox {
-	padding-right: 4px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-
-td.contacts-ListName {
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-
-.gwt-DecoratorPanel .middleCenter {
-	height: 100%;
-	width: 100%;
+	background: #777777;
 }
 
 /** Example rules used by the template application (remove for your app) */
@@ -206,7 +51,18 @@ td.contacts-ListName {
 }
 
 .welcome {
-	font-size: 15pt;
+	font-size: xx-large;
+	font-family: fantasy;
+	font-weight: 400;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: center;
+}
+
+.subHeaderText {
+	font-size: larger;
 	font-family: fantasy;
 	font-weight: 400;
 	padding-left: 10px;
@@ -234,62 +90,6 @@ td.contacts-ListName {
 }
 
 .signInButton {
-<<<<<<< HEAD
-  background: #3498db;
-  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
-  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
-  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
-  background-image: -o-linear-gradient(top, #3498db, #2980b9);
-  background-image: linear-gradient(to bottom, #3498db, #2980b9);
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  font-family: Arial;
-  color: #000000;
-  font-size: 26px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-}
-
-.signInButton:hover {
-  background: #00ffff;
-  background-image: -webkit-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: -moz-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: -ms-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: -o-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: linear-gradient(to bottom, #3c45fa, #6bd934);
-  text-decoration: none;
-}
-
-.registerButton {
- background: #3498db;
-  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
-  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
-  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
-  background-image: -o-linear-gradient(top, #3498db, #2980b9);
-  background-image: linear-gradient(to bottom, #3498db, #2980b9);
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 10px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-}
-
-.registerButton:hover {
-  background: #3c45fa;
-  background-image: -webkit-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: -moz-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: -ms-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: -o-linear-gradient(top, #3c45fa, #6bd934);
-  background-image: linear-gradient(to bottom, #3c45fa, #6bd934);
-  text-decoration: none;
-}
-
-
-=======
 	background: #3498db;
 	background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
 	background-image: -moz-linear-gradient(top, #3498db, #2980b9);
@@ -304,62 +104,6 @@ td.contacts-ListName {
 	font-size: 26px;
 	padding: 10px 20px 10px 20px;
 	text-decoration: none;
-}
-
-.signInButton:hover {
-	background: #00ffff;
-	background-image: -webkit-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: -moz-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: -ms-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: -o-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: linear-gradient(to bottom, #3c45fa, #6bd934);
-	text-decoration: none;
-}
-
-.registerButton {
-	background: #3498db;
-	background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
-	background-image: -moz-linear-gradient(top, #3498db, #2980b9);
-	background-image: -ms-linear-gradient(top, #3498db, #2980b9);
-	background-image: -o-linear-gradient(top, #3498db, #2980b9);
-	background-image: linear-gradient(to bottom, #3498db, #2980b9);
-	-webkit-border-radius: 28;
-	-moz-border-radius: 28;
-	border-radius: 28px;
-	font-family: Arial;
-	color: #ffffff;
-	font-size: 10px;
-	padding: 10px 20px 10px 20px;
-	text-decoration: none;
-}
-
-.registerButton:hover {
-	background: #3c45fa;
-	background-image: -webkit-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: -moz-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: -ms-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: -o-linear-gradient(top, #3c45fa, #6bd934);
-	background-image: linear-gradient(to bottom, #3c45fa, #6bd934);
-	text-decoration: none;
-}
-
->>>>>>> master
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-	width: 400px;
-}
-
-.dialogVPanel {
-	margin: 5px;
-}
-
-.serverResponseLabelError {
-	color: red;
-}
-
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-	margin: 15px 6px 6px;
 }
 
 .signInButton:hover {
@@ -418,16 +162,11 @@ td.contacts-ListName {
 }
 
 .hpimg {
-
-    min-height: 60%;
-    min-width: 1024px;
-    
-    width: 100%;
-    height: 50%;
- 
-    position: fixed;
-    top: 10;
-    left: 0;
+	min-height: 60%;
+	min-width: 1024px;
+	width: 100%;
+	height: 50%;
+	position: fixed;
+	top: 10;
+	left: 0;
 }
-
- 
