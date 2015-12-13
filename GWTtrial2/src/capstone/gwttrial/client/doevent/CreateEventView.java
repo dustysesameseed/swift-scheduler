@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import capstone.gwttrial.client.calendar.CalendarWidget;
 import capstone.gwttrial.client.calendar.Constants;
+import capstone.gwttrial.client.calendar.EventDetails;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -19,9 +20,14 @@ public class CreateEventView extends Composite {
 	private ArrayList<TextBox> boxes;
 	private Button createButton;
 	private Button cancelButton;
+	private Button deleteButton;
+	private Button eventToEdit;
+	private EventDetails eventToEditDetails;
 	private VerticalPanel parentPanel;
 	private int srcRow;
 	private int srcCol;
+	private Button saveButton;
+	private boolean isEdit;
 
 	public CreateEventView() {
 	}
@@ -30,12 +36,33 @@ public class CreateEventView extends Composite {
 		parentPanel = new VerticalPanel();
 		initWidget(parentPanel);
 
-		// Initialize boxes and buttons
+		// Store row and column of clickEvent for later population
 		this.srcRow = createEventSrcRow;
 		this.srcCol = createEventSrcCol;
 
+		// Initialize buttons
 		createButton = new Button("Create");
 		cancelButton = new Button("Cancel");
+
+		isEdit = false;
+
+		configure();
+	}
+
+	public CreateEventView(Button eventToEdit, EventDetails eventDetails) {
+		parentPanel = new VerticalPanel();
+		initWidget(parentPanel);
+
+		// Store Button and EventDetails belonging to the event to be edited
+		this.eventToEdit = eventToEdit;
+		this.eventToEditDetails = eventDetails;
+
+		// Initialize buttons
+		saveButton = new Button("Save");
+		cancelButton = new Button("Cancel");
+		deleteButton = new Button("Delete");
+
+		isEdit = true;
 
 		configure();
 	}
@@ -48,7 +75,13 @@ public class CreateEventView extends Composite {
 		parentPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 
 		// Initialize Labels, Boxes, and Buttons
-		Label header = new Label("Create an Event");
+		Label header;
+		if (!isEdit) {
+			header = new Label("Create an Event");
+		} else {
+			header = new Label("Edit Event");
+		}
+		header.setStyleName("subHeaderText");
 		Label nameLabel = new Label("Event Name");
 		Label locLabel = new Label("Location");
 		Label dateLabel = new Label("Date");
@@ -76,12 +109,19 @@ public class CreateEventView extends Composite {
 		flexTable.setWidget(3, 1, boxes.get(3));
 		flexTable.setWidget(4, 1, boxes.get(4));
 
-		flexTable.setWidget(5, 3, cancelButton);
-		flexTable.setWidget(5, 4, createButton);
+		if (createButton != null) {
+			flexTable.setWidget(5, 3, cancelButton);
+			flexTable.setWidget(5, 4, createButton);
+		} else {
+			flexTable.setWidget(5, 3, saveButton);
+			flexTable.setWidget(5, 4, cancelButton);
+			flexTable.setWidget(5, 5, deleteButton);
+		}
 
 		// Add the FlexTable to the ParentPanel
 		parentPanel.add(header);
 		parentPanel.add(flexTable);
+		Constants.logger.severe("CREATEEVENTVIEW.JAVA: END OF CONFIGURE().");
 	}
 
 	private void configureTextBoxes() {
@@ -91,39 +131,44 @@ public class CreateEventView extends Composite {
 		TextBox timeTBox = new TextBox();
 		TextBox descTBox = new TextBox();
 
-		if (srcRow != -1 && srcCol != -1) {
+		if (!isEdit) {
+			// Add default name, location, and date text for new Event
+			nameTBox.setText("Enter an event name (eg. Team Meeting)");
+			locTBox.setText("Enter a location (eg. Ohio Union)");
+			descTBox.setText("Enter a description");
+
+			Integer hr = CalendarWidget.getHourFromRow(srcRow);
 			// Use the srcRow to identify which hour was selected
 			Constants.logger
 					.severe("CREATEEVENTVIEW.JAVA: RETRIEVING HOUR FROM CALENDARWIDGET");
-			Constants.logger.severe("HOUR: "
-					+ CalendarWidget.getHourFromRow(srcRow));
-			String hr = CalendarWidget.getHourFromRow(srcRow).toString();
-			String amPm = CalendarWidget.getAmPm();
+			Constants.logger.severe("CREATEEVENTVIEW.JAVA: HOUR: " + hr);
+			String hrStr = hr.toString();
+			String amPm = CalendarWidget.getAmPm(hr);
 			timeTBox.setText(hr + ":00" + amPm);
 
 			// Use the srcCol to identify which day was selected
 			Constants.logger
 					.severe("CREATEEVENTVIEW.JAVA: RETREIVING DAY FROM CALENDARWIDGET");
-			Constants.logger.severe("DAY: "
+			Constants.logger.severe("CREATEEVENTVIEW.JAVA: DAY: "
 					+ CalendarWidget.getDayFromCol(srcCol));
 			String month = CalendarWidget.getCurrentMonthNum().toString();
 			String day = CalendarWidget.getDayFromCol(srcCol).toString();
 			String dateStr = CalendarWidget.getCurrentMonthNum() + "/" + day
 					+ "/" + CalendarWidget.getCurrentYear2();
-			Constants.logger.severe("Date set to: " + dateStr);
+			Constants.logger.severe("CREATEEVENTVIEW.JAVA: Date set to: "
+					+ dateStr);
 			dateTBox.setText(dateStr);
 
 		} else {
 			Constants.logger
 					.severe("CREATEEVENTVIEW: CELL SOURCE FOR CREATE EVENT HAS ROW, COL: "
 							+ srcRow + "," + srcCol);
-			dateTBox.setText("Enter a date (eg. 11/15/15)");
-			timeTBox.setText("Enter a time (eg. 5:00 pm)");
+			nameTBox.setText(eventToEditDetails.getName());
+			dateTBox.setText(eventToEditDetails.getDate());
+			timeTBox.setText(eventToEditDetails.getStartTime());
+			locTBox.setText(eventToEditDetails.getLocation());
+			descTBox.setText(eventToEditDetails.getDescription());
 		}
-
-		nameTBox.setText("Enter an event name (eg. Team Meeting)");
-		locTBox.setText("Enter a location (eg. Ohio Union)");
-		descTBox.setText("Enter a description");
 
 		nameTBox.setWidth("180%");
 		locTBox.setWidth("180%");
@@ -149,9 +194,29 @@ public class CreateEventView extends Composite {
 		return cancelButton;
 	}
 
+	public Button getSaveButton() {
+		return saveButton;
+	}
+
+	public Button getDeleteButton() {
+		return deleteButton;
+	}
+
+	public Button getEventToEdit() {
+		return eventToEdit;
+	}
+
+	public EventDetails getEventToEditDetails() {
+		return eventToEditDetails;
+	}
+
 	public ArrayList<TextBox> getEventDetails() {
 		// TODO: parse input to make sure they are legitimate strings
 		return boxes;
+	}
+
+	public boolean isEdit() {
+		return isEdit;
 	}
 
 	public Widget asWidget() {

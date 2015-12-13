@@ -162,13 +162,15 @@ public class CalendarWidget extends VerticalPanel {
 			gridFormatter.setStyleName(1, i, "daysOfTheWeekCells");
 			if (spansTwoMonths && i >= colOfMonthChange) {
 				colToDayMap.put(i, counter);
-				Constants.logger.severe("ADDING TO COLDAYMAP: " + i + ","
-						+ counter);
+				Constants.logger
+						.severe("CALENDARWIDGET.JAVA: ADDING TO COLDAYMAP: "
+								+ i + "," + counter);
 				counter++;
 			} else {
 				colToDayMap.put(i, beginWeek + i - 1);
-				Constants.logger.severe("ADDING TO COLDAYMAP: " + i + ","
-						+ (beginWeek + i - 1));
+				Constants.logger
+						.severe("CALENDARWIDGET.JAVA: ADDING TO COLDAYMAP: "
+								+ i + "," + (beginWeek + i - 1));
 			}
 		}
 
@@ -223,7 +225,8 @@ public class CalendarWidget extends VerticalPanel {
 					.severe("CALENDARWIDGET.JAVA: CALENDAR EVENT LIST IS NULL");
 		} else
 			for (EventDetails event : CalendarDetails.getEventList()) {
-				Constants.logger.severe("EVENT: " + eventCounter);
+				Constants.logger.severe("CALENDARWIDGET.JAVA: EVENTCOUNTER: "
+						+ eventCounter);
 				String eventName = event.getName();
 				String date = event.getDate();
 
@@ -301,7 +304,8 @@ public class CalendarWidget extends VerticalPanel {
 		// number of days in the new month
 		int tempEndWeek = dayOfMonth + (6 - numDaysFromSunday);
 		int currentMoDays = Constants.MONTHS_TO_TOTALDAYS_MAP.get(beginMonth);
-		Constants.logger.severe("currentMoDays: " + currentMoDays);
+		Constants.logger.severe("CALENDARWIDGET.JAVA: currentMoDays: "
+				+ currentMoDays);
 
 		if (endWeek < currentMoDays) {
 			endWeek = tempEndWeek;
@@ -339,7 +343,8 @@ public class CalendarWidget extends VerticalPanel {
 			}
 
 			// Don't forget to update the column-to-day map!!
-			Constants.logger.severe("UPDATING THE COLUMN_TO_DAY MAP");
+			Constants.logger
+					.severe("CALENDARWIDGET.JAVA: UPDATING THE COLUMN_TO_DAY MAP");
 
 			// The start index of the day-columns that need to be
 			// updated in the map
@@ -401,8 +406,14 @@ public class CalendarWidget extends VerticalPanel {
 		return grid;
 	}
 
-	public static String getAmPm() {
-		return "pm";
+	public static String getAmPm(Integer hr) {
+		String ampm = "";
+		if (hr >= 8 && hr <= 11) {
+			ampm.concat("am");
+		} else {
+			ampm.concat("pm");
+		}
+		return ampm;
 	}
 
 	public static Integer getHourFromRow(int row) {

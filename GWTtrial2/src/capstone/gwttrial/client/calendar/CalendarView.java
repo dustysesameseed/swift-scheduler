@@ -1,7 +1,6 @@
 package capstone.gwttrial.client.calendar;
 
 import java.util.Date;
-
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -27,7 +26,6 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	private DatePicker da;
 	private Anchor sendEmergencyMsg;
 	private Anchor contactAdmin;
-	private FlexTable contactsTable;
 	private FlexTable contentTable;
 	private final DecoratorPanel parentPanel;
 
@@ -45,7 +43,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		logout = new Button("Sign Out");
 		sendEmergencyMsg = new Anchor("Send Important Message",
 				"emergency.html");
-		contactAdmin = new Anchor("Contact Admin", "contact.html");
+		contactAdmin = new Anchor("Contact Administrator", "contact.html");
 
 		setLayout();
 
@@ -92,16 +90,46 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 	private void setLeft() {
 		VerticalPanel leftParentPanel = new VerticalPanel();
-		leftParentPanel.setHeight("100%");
+		int height = (Window.getClientHeight() - 48) / 2;
+		leftParentPanel.setHeight(height + "px");
 		leftParentPanel.setWidth("100%");
-		leftParentPanel.setBorderWidth(20);
 		leftParentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 
 		// **************** TOP LEFT PANEL **********************
 		// Create top left panel -- contains welcome, permissions label
+		VerticalPanel topLeftPanel = configureTopLeft();
+
+		// **************** MIDDLE LEFT PANEL **********************
+		// Create middle left panel
+		VerticalPanel middleLeftPanel = configureMiddleLeft();
+
+		// **************** BOTTOM LEFT PANEL **********************
+		// Create bottom left stack panel
+		StackPanel bottomLeftPanel = configureBottomLeft();
+
+		// Combine top and middle sections to the left parent panel
+		leftParentPanel.add(topLeftPanel);
+		leftParentPanel.add(middleLeftPanel);
+
+		// Add both left parent panel and bottom panel to the super parent
+		VerticalPanel leftSuperParent = new VerticalPanel();
+		leftSuperParent.setHeight("100%");
+		leftSuperParent.setWidth("100%");
+		leftSuperParent.setBorderWidth(15);
+		leftSuperParent.add(leftParentPanel);
+		leftSuperParent.add(bottomLeftPanel);
+
+		bottomLeftPanel.setHeight(height + "px");
+		bottomLeftPanel.setWidth("100%");
+
+		contentTable.getCellFormatter().addStyleName(0, 0, "calendar-LeftCell");
+		contentTable.setWidget(0, 0, leftSuperParent);
+	}
+
+	private VerticalPanel configureTopLeft() {
 		VerticalPanel topLeftPanel = new VerticalPanel();
 		topLeftPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		topLeftPanel.setHeight("20%");
+		topLeftPanel.setHeight("100%");
 		topLeftPanel.setWidth("100%");
 
 		// Add welcome label
@@ -109,11 +137,13 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		welcome.setStyleName("welcome");
 		topLeftPanel.add(welcome);
 
-		// **************** MIDDLE LEFT PANEL **********************
-		// Create middle left panel
+		return topLeftPanel;
+	}
+
+	private VerticalPanel configureMiddleLeft() {
 		VerticalPanel middleLeftPanel = new VerticalPanel();
 		middleLeftPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		middleLeftPanel.setHeight("35%");
+		middleLeftPanel.setHeight("100%");
 		middleLeftPanel.setWidth("100%");
 
 		// Add navigation label
@@ -124,11 +154,16 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		// Add datepicker
 		middleLeftPanel.add(da);
 
-		// ****************BOTTOM LEFT PANEL **********************
-		// Create bottom left stack panel
+		return middleLeftPanel;
+	}
+
+	/**
+	 * Set up the bottom stack panel of the left sidebar
+	 * 
+	 * @return StackPanel
+	 */
+	private StackPanel configureBottomLeft() {
 		StackPanel bottomLeftPanel = new StackPanel();
-		bottomLeftPanel.setHeight("100%");
-		bottomLeftPanel.setWidth("100%");
 
 		// Create the My Account stack
 		VerticalPanel myAccount = new VerticalPanel();
@@ -143,7 +178,6 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		myAccount.add(permissions);
 		myAccount.add(profile);
 		myAccount.add(signOut);
-
 		bottomLeftPanel.add(myAccount, "My Account");
 
 		// Create the Action Center stack
@@ -152,7 +186,6 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		contactAdmin.setStyleName("subHeaderText");
 		actionCenter.add(sendEmergencyMsg);
 		actionCenter.add(contactAdmin);
-
 		bottomLeftPanel.add(actionCenter, "Action Center");
 
 		// Create the Team Members stack
@@ -163,16 +196,9 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		teamMembers.add(new Label("Clara Evans"));
 		teamMembers.add(new Label("John Moray"));
 		teamMembers.add(new Label("Denise Lovett"));
-
 		bottomLeftPanel.add(teamMembers, "Team Members");
 
-		// Add all 3 sections to the left parent panel
-		leftParentPanel.add(topLeftPanel);
-		leftParentPanel.add(middleLeftPanel);
-		leftParentPanel.add(bottomLeftPanel);
-
-		contentTable.getCellFormatter().addStyleName(0, 0, "calendar-LeftCell");
-		contentTable.setWidget(0, 0, leftParentPanel);
+		return bottomLeftPanel;
 	}
 
 	public FlexTable getCalendar() {

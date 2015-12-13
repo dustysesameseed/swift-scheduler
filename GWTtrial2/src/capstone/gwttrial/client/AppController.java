@@ -4,6 +4,7 @@ import capstone.gwttrial.client.calendar.CalendarDetails;
 import capstone.gwttrial.client.calendar.CalendarPresenter;
 import capstone.gwttrial.client.calendar.CalendarView;
 import capstone.gwttrial.client.calendar.Constants;
+import capstone.gwttrial.client.calendar.EventDetails;
 import capstone.gwttrial.client.doevent.CreateEvent;
 import capstone.gwttrial.client.doevent.CreateEventHandler;
 import capstone.gwttrial.client.doevent.CreateEventPresenter;
@@ -24,6 +25,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 public class AppController implements Presenter, ValueChangeHandler<String> {
@@ -33,6 +35,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private int createEventSrcRow;
 	private int createEventSrcCol;
 	private CalendarDetails calDetails;
+	private Button eventToEdit;
+	private EventDetails eventDetails;
 
 	public AppController(EventBus eventBus) {
 		this.eventBus = eventBus;
@@ -56,7 +60,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				createToken(event.getId());
 			}
 		});
-		
+
 		// "Register" button eventBus handler -- token "register"
 		eventBus.addHandler(RegisterEvent.TYPE, new RegisterEventHandler() {
 			public void onRegister(RegisterEvent event) {
@@ -79,12 +83,20 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		// CalendarView) -- token "createEvent" or "home"
 		eventBus.addHandler(CreateEvent.TYPE, new CreateEventHandler() {
 			public void onCreateEvent(CreateEvent event) {
-				Constants.logger
-						.severe("APPCONTROLLER.JAVA: CREATE EVENT DETECTED");
-				createEventSrcRow = event.getCellSrcRow();
-				createEventSrcCol = event.getCellSrcCol();
-				Constants.logger.severe("APPCONTROLLER.JAVA: ROW, COL: "
-						+ createEventSrcRow + "," + createEventSrcCol);
+				if (event.getId().equals("editEvent")) {
+					eventToEdit = event.getEventToEdit();
+					eventDetails = event.getEventDetails();
+					Constants.logger
+							.severe("APPCONTROLLER.JAVA: EDIT EVENT DETECTED");
+				} else {
+					createEventSrcRow = event.getCellSrcRow();
+					createEventSrcCol = event.getCellSrcCol();
+					Constants.logger
+							.severe("APPCONTROLLER.JAVA: CREATE EVENT DETECTED W/ROW, COL: "
+									+ createEventSrcRow
+									+ ","
+									+ createEventSrcCol);
+				}
 				createToken(event.getId());
 			}
 		});
@@ -131,8 +143,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				presenter = new CreateEventPresenter(eventBus,
 						new CreateEventView(createEventSrcRow,
 								createEventSrcCol));
+			} else if (token.equals("editEvent")) {
+				presenter = new CreateEventPresenter(eventBus,
+						new CreateEventView(eventToEdit, eventDetails));
 			} else if (token.equals("register")) {
-				presenter = new RegisterPresenter(eventBus, new RegisterView(token));
+				presenter = new RegisterPresenter(eventBus, new RegisterView(
+						token));
 			}
 
 			if (presenter != null) {

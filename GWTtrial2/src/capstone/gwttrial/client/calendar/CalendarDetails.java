@@ -30,8 +30,8 @@ public class CalendarDetails implements Serializable {
 		}
 	}
 
-	public static void deleteEvent(String eventName) {
-		events.remove(getEventIdx(eventName));
+	public static boolean deleteEvent(EventDetails event) {
+		return events.remove(getEventIdx(event.getName())) != null;
 	}
 
 	public static ArrayList<EventDetails> getEventList() {
@@ -51,7 +51,8 @@ public class CalendarDetails implements Serializable {
 		}
 
 		if (!found) {
-			System.out.println("Throw getEventIdx() error");
+			Constants.logger
+					.severe("CALENDARDETAILS.JAVA: EVENT TO BE REMOVED NOT FOUND IN LIST");
 		}
 
 		return index;

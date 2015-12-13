@@ -40,13 +40,14 @@ public class CalendarPresenter implements Presenter {
 			}
 		});
 
-		Map<Button, EventDetails> buttonEvMap = CalendarWidget
+		final Map<Button, EventDetails> buttonEvMap = CalendarWidget
 				.getEventButtonMap();
 		if (buttonEvMap != null && !buttonEvMap.isEmpty()) {
-			for (Button button : buttonEvMap.keySet()) {
+			for (final Button button : buttonEvMap.keySet()) {
 				button.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						// eventBus.fireEvent(new EditEvent("edit"));
+						eventBus.fireEvent(new CreateEvent(button, buttonEvMap
+								.get(button), "editEvent"));
 					}
 				});
 			}
