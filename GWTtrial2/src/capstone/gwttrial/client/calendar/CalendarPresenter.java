@@ -28,13 +28,13 @@ public class CalendarPresenter implements Presenter {
 	}
 
 	public void bind() {
-		viewHandler.getProfileButton().addClickHandler(new ClickHandler() {
+		viewHandler.getProfileLink().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				// eventBus.fireEvent(new AddEvent());
 			}
 		});
 
-		viewHandler.getLogoutButton().addClickHandler(new ClickHandler() {
+		viewHandler.getLogoutLink().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				eventBus.fireEvent(new LogoutEvent("logout"));
 			}

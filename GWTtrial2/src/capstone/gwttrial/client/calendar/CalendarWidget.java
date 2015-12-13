@@ -407,12 +407,14 @@ public class CalendarWidget extends VerticalPanel {
 	}
 
 	public static String getAmPm(Integer hr) {
-		String ampm = "";
+		String ampm;
 		if (hr >= 8 && hr <= 11) {
-			ampm.concat("am");
+			ampm = "am";
 		} else {
-			ampm.concat("pm");
+			ampm = "pm";
 		}
+		Constants.logger.severe("CALENDARWIDGET.JAVA: RETURNING " + ampm
+				+ " in GETAMPM()");
 		return ampm;
 	}
 

@@ -5,9 +5,9 @@ import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.Widget;
 
 public interface CalendarViewHandler {
-	HasClickHandlers getProfileButton();
+	HasClickHandlers getProfileLink();
 
-	HasClickHandlers getLogoutButton();
+	HasClickHandlers getLogoutLink();
 
 	Widget asWidget();
 

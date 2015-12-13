@@ -142,8 +142,9 @@ public class CreateEventView extends Composite {
 			Constants.logger
 					.severe("CREATEEVENTVIEW.JAVA: RETRIEVING HOUR FROM CALENDARWIDGET");
 			Constants.logger.severe("CREATEEVENTVIEW.JAVA: HOUR: " + hr);
-			String hrStr = hr.toString();
 			String amPm = CalendarWidget.getAmPm(hr);
+			Constants.logger.severe("CREATEEVENTVIEW.JAVA: RETURNED " + amPm
+					+ " from GETAMPM()");
 			timeTBox.setText(hr + ":00" + amPm);
 
 			// Use the srcCol to identify which day was selected

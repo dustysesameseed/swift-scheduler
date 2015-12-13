@@ -21,11 +21,12 @@ import capstone.gwttrial.client.user.User;
 
 public class CalendarView extends Composite implements CalendarViewHandler {
 	private CalendarWidget userCal;
-	private Button prof;
-	private Button logout;
 	private DatePicker da;
 	private Anchor sendEmergencyMsg;
 	private Anchor contactAdmin;
+	private Anchor profile;
+	private Anchor logout;
+	private Anchor schedulingTools;
 	private FlexTable contentTable;
 	private final DecoratorPanel parentPanel;
 
@@ -39,8 +40,6 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		contentTable = new FlexTable();
 		da = new DatePicker();
 
-		prof = new Button("Profile");
-		logout = new Button("Sign Out");
 		sendEmergencyMsg = new Anchor("Send Important Message",
 				"emergency.html");
 		contactAdmin = new Anchor("Contact Administrator", "contact.html");
@@ -170,14 +169,27 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 		// Add permissions label
 		Label permissions = new Label("Permissions: " + User.getLevel());
-		Anchor profile = new Anchor("My Profile");
-		Anchor signOut = new Anchor("Sign Out");
+		Label admin = new Label("Administrator: Peter Dudley"); // TODO: make
+																// this
+																// User.getAdmin();
+		Label myLinks = new Label("My Links:");
+		profile = new Anchor("My Profile");
+		schedulingTools = new Anchor("My Scheduling Tools");
+		logout = new Anchor("Sign Out");
+
 		permissions.setStyleName("subHeaderText");
+		admin.setStyleName("subHeaderText");
+		myLinks.setStyleName("subHeaderText");
+		schedulingTools.setStyleName("subHeaderText");
 		profile.setStyleName("subHeaderText");
-		signOut.setStyleName("subHeaderText");
+		logout.setStyleName("subHeaderText");
+
+		myAccount.add(admin);
 		myAccount.add(permissions);
+		myAccount.add(myLinks);
+		myAccount.add(schedulingTools);
 		myAccount.add(profile);
-		myAccount.add(signOut);
+		myAccount.add(logout);
 		bottomLeftPanel.add(myAccount, "My Account");
 
 		// Create the Action Center stack
@@ -211,11 +223,11 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		contentTable.setWidget(0, 1, userCal.getCalendar());
 	}
 
-	public HasClickHandlers getProfileButton() {
-		return prof;
+	public HasClickHandlers getProfileLink() {
+		return profile;
 	}
 
-	public HasClickHandlers getLogoutButton() {
+	public HasClickHandlers getLogoutLink() {
 		return logout;
 	}
 
