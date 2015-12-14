@@ -19,6 +19,14 @@ public class CalendarDetails implements Serializable {
 		events = new ArrayList<EventDetails>();
 	}
 
+	public CalendarDetails(CalendarDetails result) {
+		this.username = result.username;
+		this.user = result.user;
+		for (int i = 0; i<result.events.size();i++) {
+			events.add(result.events.get(i));
+		}
+	}
+
 	public static void addEvent(EventDetails newEvent) {
 		if (events == null) {
 			Constants.logger

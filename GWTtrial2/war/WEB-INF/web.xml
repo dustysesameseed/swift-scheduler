@@ -27,7 +27,7 @@
 
 	<servlet>
 		<servlet-name>calendarServlet</servlet-name>
-		<servlet-class>capstone.gwttrial.server.LoginServiceImpl</servlet-class>
+		<servlet-class>capstone.gwttrial.server.CalendarServiceImpl</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

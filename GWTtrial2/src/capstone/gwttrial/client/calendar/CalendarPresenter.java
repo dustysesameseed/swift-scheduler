@@ -3,9 +3,12 @@ package capstone.gwttrial.client.calendar;
 import java.util.Map;
 
 import capstone.gwttrial.client.Presenter;
+import capstone.gwttrial.client.calendar.service.CalendarService;
+import capstone.gwttrial.client.calendar.service.CalendarServiceAsync;
 import capstone.gwttrial.client.doevent.CreateEvent;
 import capstone.gwttrial.client.login.LogoutEvent;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -78,6 +81,7 @@ public class CalendarPresenter implements Presenter {
 	}
 
 	public void go(final HasWidgets container) {
+		
 		bind();
 		container.clear();
 		container.add(viewHandler.asWidget());

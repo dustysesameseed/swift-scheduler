@@ -1,7 +1,13 @@
 package capstone.gwttrial.client.login;
 
+import java.util.ArrayList;
+
 import capstone.gwttrial.client.Presenter;
+import capstone.gwttrial.client.calendar.CalendarDetails;
 import capstone.gwttrial.client.calendar.Constants;
+import capstone.gwttrial.client.calendar.EventDetails;
+import capstone.gwttrial.client.calendar.service.CalendarService;
+import capstone.gwttrial.client.calendar.service.CalendarServiceAsync;
 import capstone.gwttrial.client.login.service.LoginService;
 import capstone.gwttrial.client.login.service.LoginServiceAsync;
 import capstone.gwttrial.client.user.User;
@@ -20,11 +26,13 @@ public class LoginPresenter implements Presenter {
 	private final EventBus eventBus;
 	private final LoginView display;
 	private final LoginServiceAsync rpcLogin;
+	private CalendarServiceAsync rpcCalendar;
 
 	public LoginPresenter(EventBus eventBus, LoginView loginView) {
 		this.eventBus = eventBus;
 		this.display = loginView;
 		this.rpcLogin = GWT.create(LoginService.class);
+		this.rpcCalendar = GWT.create(CalendarService.class);
 	}
 
 	private void bind() {
@@ -45,8 +53,33 @@ public class LoginPresenter implements Presenter {
 
 								public void onSuccess(Boolean loggedIn) {
 									if (loggedIn) {
-										eventBus.fireEvent(new LoginEvent(
-												"home"));
+										
+										rpcCalendar.getCalendarEvents(display.getUN(),
+												new AsyncCallback<ArrayList<EventDetails>>() {
+
+													@Override
+													public void onSuccess(
+															ArrayList<EventDetails> result) {
+														for (int i = 0; i<result.size();i++) {
+															CalendarDetails.addEvent(result.get(i));
+															CalendarDetails.events.get(CalendarDetails.events.size()-1).unformatTime();
+														}
+														
+														
+														eventBus.fireEvent(new LoginEvent(
+																"home"));
+													}
+													
+													@Override
+													public void onFailure(
+															Throwable caught) {
+														Window.alert("Failed to load calendar.");
+														Constants.logger
+																.severe("LOGINPRESENTER.JAVA: CALENDAR LOAD FAILURE");
+														
+													}
+										});						
+										
 									} else {
 										Window.alert("Incorrect username or password.");
 										Constants.logger

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -135,7 +136,7 @@ public class CalendarWidget extends VerticalPanel {
 				.severe("CALENDARWIDGET.JAVA: CELL WIDTH, CELL HEIGHT: "
 						+ cellWidth + "," + cellHeight);
 
-		for (int i = 2; i < 12; i++) {
+		for (int i = 2; i < 16; i++) {
 			// grid.getRowFormatter().setStyleName(i, "");
 			for (int j = 1; j < 8; j++) {
 				grid.getColumnFormatter().setWidth(j, cellWidth + "px");
@@ -200,9 +201,10 @@ public class CalendarWidget extends VerticalPanel {
 			rowTemp++;
 		}
 
-		rowTemp = 8;
-		grid.setText(7, 0, "12:00 pm");
-		gridFormatter.setStyleName(7, 0, "daysOfTheWeekCells");
+		rowTemp = 7;
+		grid.setText(6, 0, "12:00 pm");
+		rowToHrMap.put(6, 12);
+		gridFormatter.setStyleName(6, 0, "daysOfTheWeekCells");
 
 		for (int i = 1; i < 5; i++) {
 			grid.setText(rowTemp, 0, i + ":00 pm");
@@ -259,10 +261,15 @@ public class CalendarWidget extends VerticalPanel {
 					Button newEvent = new Button(eventName + "<br/>"
 							+ event.getLocation());
 					newEvent.setWidth("100%");
-					newEvent.setHeight("100%");
+					int top = newEvent.getAbsoluteTop();
+					newEvent.getElement().getStyle().setTop(top+(Integer.parseInt(event.getMinutesOffset())/60.0)*100, Unit.PCT);
+					newEvent.setHeight(event.getPercentOfHour()+"%");
 					eventButtonMap.put(newEvent, event);
 					grid.setWidget(getRowFromHour(startTime), eventCol,
 							newEvent);
+					
+					//int top = newEvent.getAbsoluteTop();
+					//newEvent.getElement().getStyle().setTop(top+(Integer.parseInt(event.getMinutesOffset())/60.0)*100, Unit.PCT);
 					eventCounter++;
 				} else {
 					Constants.logger

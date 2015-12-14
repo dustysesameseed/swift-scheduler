@@ -27,7 +27,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 			 PreparedStatement preparedStatement = null;
 			 ResultSet resultSet = null;
 			 Boolean exists = false;
-			 Boolean noDatabaseMode = true;
+			 Boolean noDatabaseMode = false;
 			 
 			 try {
 				 Class.forName("com.mysql.jdbc.Driver");

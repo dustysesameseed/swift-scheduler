@@ -56,6 +56,8 @@ public class CreateEventView extends Composite {
 		// Store Button and EventDetails belonging to the event to be edited
 		this.eventToEdit = eventToEdit;
 		this.eventToEditDetails = eventDetails;
+		Constants.logger.severe("CREATEEVENTVIEW.JAVA: EventToEditDetailsID set to: "
+				+ this.eventToEditDetails.getEventID());
 
 		// Initialize buttons
 		saveButton = new Button("Save");
@@ -85,7 +87,8 @@ public class CreateEventView extends Composite {
 		Label nameLabel = new Label("Event Name");
 		Label locLabel = new Label("Location");
 		Label dateLabel = new Label("Date");
-		Label timeLabel = new Label("Time");
+		Label startTimeLabel = new Label("Start Time");
+		Label endTimeLabel = new Label("End Time");
 		Label descLabel = new Label("Description");
 		configureTextBoxes();
 
@@ -100,22 +103,24 @@ public class CreateEventView extends Composite {
 		flexTable.setWidget(0, 0, nameLabel);
 		flexTable.setWidget(1, 0, locLabel);
 		flexTable.setWidget(2, 0, dateLabel);
-		flexTable.setWidget(3, 0, timeLabel);
-		flexTable.setWidget(4, 0, descLabel);
+		flexTable.setWidget(3, 0, startTimeLabel);
+		flexTable.setWidget(4, 0, endTimeLabel);
+		flexTable.setWidget(5, 0, descLabel);
 
 		flexTable.setWidget(0, 1, boxes.get(0));
 		flexTable.setWidget(1, 1, boxes.get(1));
 		flexTable.setWidget(2, 1, boxes.get(2));
 		flexTable.setWidget(3, 1, boxes.get(3));
 		flexTable.setWidget(4, 1, boxes.get(4));
+		flexTable.setWidget(5, 1, boxes.get(5));
 
 		if (createButton != null) {
-			flexTable.setWidget(5, 3, cancelButton);
-			flexTable.setWidget(5, 4, createButton);
+			flexTable.setWidget(6, 3, cancelButton);
+			flexTable.setWidget(6, 4, createButton);
 		} else {
-			flexTable.setWidget(5, 3, saveButton);
-			flexTable.setWidget(5, 4, cancelButton);
-			flexTable.setWidget(5, 5, deleteButton);
+			flexTable.setWidget(6, 3, saveButton);
+			flexTable.setWidget(6, 4, cancelButton);
+			flexTable.setWidget(6, 5, deleteButton);
 		}
 
 		// Add the FlexTable to the ParentPanel
@@ -128,7 +133,8 @@ public class CreateEventView extends Composite {
 		TextBox nameTBox = new TextBox();
 		TextBox locTBox = new TextBox();
 		TextBox dateTBox = new TextBox();
-		TextBox timeTBox = new TextBox();
+		TextBox startTimeTBox = new TextBox();
+		TextBox endTimeTBox = new TextBox();
 		TextBox descTBox = new TextBox();
 
 		if (!isEdit) {
@@ -145,7 +151,8 @@ public class CreateEventView extends Composite {
 			String amPm = CalendarWidget.getAmPm(hr);
 			Constants.logger.severe("CREATEEVENTVIEW.JAVA: RETURNED " + amPm
 					+ " from GETAMPM()");
-			timeTBox.setText(hr + ":00" + amPm);
+			startTimeTBox.setText(hr + ":00" + amPm);
+			endTimeTBox.setText((hr+1) + ":00" + amPm);
 
 			// Use the srcCol to identify which day was selected
 			Constants.logger
@@ -166,7 +173,8 @@ public class CreateEventView extends Composite {
 							+ srcRow + "," + srcCol);
 			nameTBox.setText(eventToEditDetails.getName());
 			dateTBox.setText(eventToEditDetails.getDate());
-			timeTBox.setText(eventToEditDetails.getStartTime());
+			startTimeTBox.setText(eventToEditDetails.getStartTime());
+			endTimeTBox.setText(eventToEditDetails.getEndTime());
 			locTBox.setText(eventToEditDetails.getLocation());
 			descTBox.setText(eventToEditDetails.getDescription());
 		}
@@ -174,7 +182,8 @@ public class CreateEventView extends Composite {
 		nameTBox.setWidth("180%");
 		locTBox.setWidth("180%");
 		dateTBox.setWidth("180%");
-		timeTBox.setWidth("180%");
+		startTimeTBox.setWidth("180%");
+		endTimeTBox.setWidth("180%");
 		descTBox.setWidth("180%");
 		nameTBox.setFocus(true);
 		nameTBox.selectAll();
@@ -183,7 +192,8 @@ public class CreateEventView extends Composite {
 		boxes.add(nameTBox);
 		boxes.add(locTBox);
 		boxes.add(dateTBox);
-		boxes.add(timeTBox);
+		boxes.add(startTimeTBox);
+		boxes.add(endTimeTBox);
 		boxes.add(descTBox);
 	}
 
