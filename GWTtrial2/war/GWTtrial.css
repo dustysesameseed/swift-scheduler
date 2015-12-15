@@ -170,3 +170,8 @@ td.calendar-ListContainer {
 	top: 10;
 	left: 0;
 }
+
+.eventButton {
+	width: 100%;
+	border: 0px;
+}

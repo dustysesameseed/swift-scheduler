@@ -1,14 +1,11 @@
 package capstone.gwttrial.client.doevent;
 
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import capstone.gwttrial.client.Presenter;
@@ -39,17 +36,21 @@ public class CreateEventPresenter implements Presenter {
 
 				@Override
 				public void onClick(ClickEvent event) {
-					eventDeets.parseDetails(view.getEventDetails());
+					eventDeets.parseDetails(view.getEventBoxes(),
+							view.getEventAreas());
 					rpcCalendar.addCalendarEvent(eventDeets,
 							new AsyncCallback<Integer>() {
 
 								public void onSuccess(Integer eventID) {
 									eventDeets.setEventID(eventID.intValue());
 									CalendarDetails.addEvent(eventDeets);
-									CalendarDetails.events.get(CalendarDetails.events.size()-1).setEventID(eventID.intValue());
+									CalendarDetails.events.get(
+											CalendarDetails.events.size() - 1)
+											.setEventID(eventID.intValue());
 									Constants.logger
-									.severe("EVENT DETAILS ADDED TO CALENDAR DETAILS LIST");
-							eventBus.fireEvent(new CreateEvent(-1, -1, "home"));
+											.severe("EVENT DETAILS ADDED TO CALENDAR DETAILS LIST");
+									eventBus.fireEvent(new CreateEvent(-1, -1,
+											"home"));
 								}
 
 								public void onFailure(Throwable caught) {
@@ -58,9 +59,7 @@ public class CreateEventPresenter implements Presenter {
 											.severe("CREATEVENTPRESENTER.JAVA: ADD EVENT FAILURE");
 								}
 							});
-					
-					
-					
+
 				}
 			});
 		} else {
@@ -69,51 +68,65 @@ public class CreateEventPresenter implements Presenter {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					
-
 					// Add a new version using updated EventDetails
-					eventDeets.parseDetails(view.getEventDetails());
-					Constants.logger.severe("CREATEEVENTPRESENTER.JAVA: EventDetailsID set to: "
-							+ view.getEventToEditDetails().getEventID());
-					rpcCalendar.removeCalendarEvent(view.getEventToEditDetails().getEventID(), 
+					eventDeets.parseDetails(view.getEventBoxes(),
+							view.getEventAreas());
+					Constants.logger
+							.severe("CREATEEVENTPRESENTER.JAVA: EventDetailsID set to: "
+									+ view.getEventToEditDetails().getEventID());
+					rpcCalendar.removeCalendarEvent(view
+							.getEventToEditDetails().getEventID(),
 							new AsyncCallback<Boolean>() {
-@Override
+								@Override
 								public void onSuccess(Boolean result) {
-									// Remove the EventDetails from the CalendarDetails
-									CalendarDetails.deleteEvent(view.getEventToEditDetails());
-								
-									// Remove the button event from the static map
+									// Remove the EventDetails from the
+									// CalendarDetails
+									CalendarDetails.deleteEvent(view
+											.getEventToEditDetails());
+
+									// Remove the button event from the static
+									// map
 									CalendarWidget.getEventButtonMap().remove(
 											view.getEventToEdit());
-	
-	
+
 									rpcCalendar.addCalendarEvent(eventDeets,
-									new AsyncCallback<Integer>() {
-		
-										public void onSuccess(Integer eventID) {
-											eventDeets.setEventID(eventID.intValue());
-											CalendarDetails.addEvent(eventDeets);
-											CalendarDetails.events.get(CalendarDetails.events.size()-1).setEventID(eventID.intValue());
-											Constants.logger
-											.severe("EVENT DETAILS UPDATED TO CALENDAR DETAILS LIST");
-											Constants.logger.severe("EVENT DETAILS UPDATED");
-												eventBus.fireEvent(new CreateEvent(-1, -1, "home"));
-										}
-		
-										public void onFailure(Throwable caught) {
-											Window.alert("Failure on update-add event attempt.");
-											Constants.logger
-													.severe("CREATEVENTPRESENTER.JAVA: UPDATE-ADD EVENT FAILURE");
-										}
-									});
+											new AsyncCallback<Integer>() {
+
+												public void onSuccess(
+														Integer eventID) {
+													eventDeets.setEventID(eventID
+															.intValue());
+													CalendarDetails
+															.addEvent(eventDeets);
+													CalendarDetails.events
+															.get(CalendarDetails.events
+																	.size() - 1)
+															.setEventID(
+																	eventID.intValue());
+													Constants.logger
+															.severe("EVENT DETAILS UPDATED TO CALENDAR DETAILS LIST");
+													Constants.logger
+															.severe("EVENT DETAILS UPDATED");
+													eventBus.fireEvent(new CreateEvent(
+															-1, -1, "home"));
+												}
+
+												public void onFailure(
+														Throwable caught) {
+													Window.alert("Failure on update-add event attempt.");
+													Constants.logger
+															.severe("CREATEVENTPRESENTER.JAVA: UPDATE-ADD EVENT FAILURE");
+												}
+											});
 								}
+
 								@Override
 								public void onFailure(Throwable caught) {
 									Window.alert("Failure on update-remove event attempt.");
 									Constants.logger
 											.severe("CREATEVENTPRESENTER.JAVA: UPDATE-REMOVE EVENT FAILURE");
-								}								
-					});
+								}
+							});
 				}
 			});
 
@@ -122,26 +135,32 @@ public class CreateEventPresenter implements Presenter {
 				@Override
 				public void onClick(ClickEvent event) {
 					Constants.logger.severe("EVENT DELETED");
-					rpcCalendar.removeCalendarEvent(view.getEventToEditDetails().getEventID(), 
+					rpcCalendar.removeCalendarEvent(view
+							.getEventToEditDetails().getEventID(),
 							new AsyncCallback<Boolean>() {
-@Override
+								@Override
 								public void onSuccess(Boolean result) {
-									// Remove the EventDetails from the CalendarDetails
-									CalendarDetails.deleteEvent(view.getEventToEditDetails());
-								
-									// Remove the button event from the static map
+									// Remove the EventDetails from the
+									// CalendarDetails
+									CalendarDetails.deleteEvent(view
+											.getEventToEditDetails());
+
+									// Remove the button event from the static
+									// map
 									CalendarWidget.getEventButtonMap().remove(
 											view.getEventToEdit());
-	
-									eventBus.fireEvent(new CreateEvent(-1, -1, "home"));
+
+									eventBus.fireEvent(new CreateEvent(-1, -1,
+											"home"));
 								}
+
 								@Override
 								public void onFailure(Throwable caught) {
 									Window.alert("Failure on remove event attempt.");
 									Constants.logger
 											.severe("CREATEVENTPRESENTER.JAVA: REMOVE EVENT FAILURE");
-								}								
-					});
+								}
+							});
 
 				}
 			});

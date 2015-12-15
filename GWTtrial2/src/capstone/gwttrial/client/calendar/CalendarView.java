@@ -6,7 +6,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -22,15 +21,14 @@ import capstone.gwttrial.client.user.User;
 public class CalendarView extends Composite implements CalendarViewHandler {
 	private CalendarWidget userCal;
 	private DatePicker da;
-	private Anchor sendEmergencyMsg;
-	private Anchor contactAdmin;
+	private Anchor requestEvents;
+	private Anchor showApprovedEvents;
+	private Anchor approveEvents;
 	private Anchor profile;
 	private Anchor logout;
 	private Anchor schedulingTools;
 	private FlexTable contentTable;
 	private final DecoratorPanel parentPanel;
-
-	// private final leftParentPanel
 
 	public CalendarView() {
 		parentPanel = new DecoratorPanel();
@@ -40,30 +38,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		contentTable = new FlexTable();
 		da = new DatePicker();
 
-		sendEmergencyMsg = new Anchor("Send Important Message",
-				"emergency.html");
-		contactAdmin = new Anchor("Contact Administrator", "contact.html");
-
 		setLayout();
-
-		// Funtionality of Datepicker Click to Calendar Highlight
-		// Highlight specific day in Calendarview while click the corresponding
-		// one in Datepicker
-		da.addValueChangeHandler(new ValueChangeHandler<Date>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<Date> event) {
-				Date date = da.getHighlightedDate();
-				int dayOfWeek = date.getDay(); // Stilling working although
-												// deprecated
-				// Window.alert(Integer.toString(dayOfWeek));
-				for (int i = 1; i < 8; i++) {
-					userCal.getCalendar().getColumnFormatter()
-							.setStyleName(i, "");
-				}
-				userCal.getCalendar().getColumnFormatter()
-						.setStyleName(dayOfWeek + 1, "selectedColumn");
-			}
-		});
 	}
 
 	private void setLayout() {
@@ -151,6 +126,24 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		middleLeftPanel.add(navigate);
 
 		// Add datepicker
+		// Funtionality of Datepicker Click to Calendar Highlight
+		// Highlight specific day in Calendarview while click the corresponding
+		// one in Datepicker
+		da.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				Date date = da.getHighlightedDate();
+				int dayOfWeek = date.getDay(); // Stilling working although
+												// deprecated
+				// Window.alert(Integer.toString(dayOfWeek));
+				for (int i = 1; i < 8; i++) {
+					userCal.getCalendar().getColumnFormatter()
+							.setStyleName(i, "");
+				}
+				userCal.getCalendar().getColumnFormatter()
+						.setStyleName(dayOfWeek + 1, "selectedColumn");
+			}
+		});
 		middleLeftPanel.add(da);
 
 		return middleLeftPanel;
@@ -163,7 +156,7 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 	 */
 	private StackPanel configureBottomLeft() {
 		StackPanel bottomLeftPanel = new StackPanel();
-
+		// -------------------------------------------
 		// Create the My Account stack
 		VerticalPanel myAccount = new VerticalPanel();
 
@@ -192,14 +185,51 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 		myAccount.add(logout);
 		bottomLeftPanel.add(myAccount, "My Account");
 
+		// -------------------------------------------
 		// Create the Action Center stack
 		VerticalPanel actionCenter = new VerticalPanel();
+
+		// Configure approval for events panel
+		Label eventActions = new Label("Event Actions:");
+		eventActions.setStyleName("subHeaderText");
+		actionCenter.add(eventActions);
+
+		// Configure according to User level
+		if (User.getLevel().equalsIgnoreCase("Team Member")) {
+			requestEvents = new Anchor("Submit An Event For Approval");
+			requestEvents.setStyleName("subHeaderText");
+			actionCenter.add(requestEvents);
+
+		} else {
+			approveEvents = new Anchor("Approve Suggested Events");
+			approveEvents.setStyleName("subHeaderText");
+			actionCenter.add(approveEvents);
+		}
+
+		showApprovedEvents = new Anchor("See Approved Events");
+		showApprovedEvents.setStyleName("subHeaderText");
+		actionCenter.add(showApprovedEvents);
+
+		// Configure messaging center section labels and anchors
+		Label messagingSectHeader = new Label("Messaging:");
+		Anchor sendEmergencyMsg = new Anchor("Send Important Message",
+				"emergency.html");
+		Anchor contactAdmin = new Anchor("Contact Administrator",
+				"contact.html");
+
+		messagingSectHeader.setStyleName("subHeaderText");
 		sendEmergencyMsg.setStyleName("subHeaderText");
 		contactAdmin.setStyleName("subHeaderText");
+
+		actionCenter.add(messagingSectHeader);
 		actionCenter.add(sendEmergencyMsg);
-		actionCenter.add(contactAdmin);
+		if (User.getLevel().equalsIgnoreCase("Team Member")) {
+			actionCenter.add(contactAdmin);
+		}
+
 		bottomLeftPanel.add(actionCenter, "Action Center");
 
+		// -------------------------------------------
 		// Create the Team Members stack
 		VerticalPanel teamMembers = new VerticalPanel();
 		teamMembers.add(new Label("Tom Weston"));
@@ -233,5 +263,20 @@ public class CalendarView extends Composite implements CalendarViewHandler {
 
 	public Widget asWidget() {
 		return this;
+	}
+
+	@Override
+	public Anchor getReqEventsLink() {
+		return requestEvents;
+	}
+
+	@Override
+	public Anchor getShowApprovedEventsLink() {
+		return showApprovedEvents;
+	}
+
+	@Override
+	public Anchor getApproveEventsLink() {
+		return approveEvents;
 	}
 }

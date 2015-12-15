@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
@@ -130,8 +132,10 @@ public class CalendarWidget extends VerticalPanel {
 		setHoursTextColumn0();
 
 		// Filler cells
-		cellWidth = Window.getClientWidth() / 10;
-		cellHeight = Window.getClientHeight() / 25;
+		double dblCellWidth = (double) Window.getClientWidth() / 10.0;
+		double dblCellHeight = (double) Window.getClientWidth() / 15.0;
+		cellWidth = (int) dblCellWidth;
+		cellHeight = (int) dblCellHeight;
 		Constants.logger
 				.severe("CALENDARWIDGET.JAVA: CELL WIDTH, CELL HEIGHT: "
 						+ cellWidth + "," + cellHeight);
@@ -192,7 +196,6 @@ public class CalendarWidget extends VerticalPanel {
 	 * calendar
 	 */
 	private void setHoursTextColumn0() {
-		// TODO: Fix am/pm
 		int rowTemp = 2;
 		for (int i = 8; i < 12; i++) {
 			grid.setText(rowTemp, 0, i + ":00 am");
@@ -231,19 +234,17 @@ public class CalendarWidget extends VerticalPanel {
 						+ eventCounter);
 				String eventName = event.getName();
 				String date = event.getDate();
+				String fullStartTime = event.getStartTime();
+				String fullEndTime = event.getEndTime();
 
 				// Get the hour of the event, which corresponds to the row in
 				// the table
-				String startTime = event.getStartTime();
-				int idx = startTime.indexOf(":");
-				startTime = startTime.substring(0, idx);
+				Integer startTimeHr = getIntHrFromTimeStr(fullStartTime);
+				Integer endTimeHr = getIntHrFromTimeStr(fullEndTime);
 
+				// Get the column of the event
 				int eventCol = 0;
-				String[] dateArray = event.getDate().split("/");
-				Integer dayOfMonth = Integer.parseInt(dateArray[1]);
-				Constants.logger
-						.severe("CALENDARWIDGET.JAVA: DAY OF EVENT ENTERED WAS: "
-								+ dayOfMonth);
+				Integer dayOfMonth = getDayOfMonth(date);
 
 				if (colToDayMap.containsValue(dayOfMonth)) {
 					// Calculate how many days from the beginning of the week,
@@ -251,25 +252,76 @@ public class CalendarWidget extends VerticalPanel {
 					for (Integer key : colToDayMap.keySet()) {
 						if (colToDayMap.get(key) == dayOfMonth) {
 							eventCol = key;
-							Constants.logger
-									.severe("CALENDARWIDGET.JAVA: THE EVENT COL IS: "
-											+ eventCol);
 						}
 					}
 
 					// Create a new button for the event to be displayed
 					Button newEvent = new Button(eventName + "<br/>"
 							+ event.getLocation());
-					newEvent.setWidth("100%");
-					int top = newEvent.getAbsoluteTop();
-					newEvent.getElement().getStyle().setTop(top+(Integer.parseInt(event.getMinutesOffset())/60.0)*100, Unit.PCT);
-					newEvent.setHeight(event.getPercentOfHour()+"%");
+					newEvent.setStyleName("eventButton");
 					eventButtonMap.put(newEvent, event);
-					grid.setWidget(getRowFromHour(startTime), eventCol,
-							newEvent);
-					
-					//int top = newEvent.getAbsoluteTop();
-					//newEvent.getElement().getStyle().setTop(top+(Integer.parseInt(event.getMinutesOffset())/60.0)*100, Unit.PCT);
+
+					// Check if it is a span of a round hour to another round
+					// hour
+					boolean wholeHrsSpan = (fullStartTime.contains("00") && fullEndTime
+							.contains("00"));
+
+					// CASE 1: 11-1, 2-4, 9-12, etc.
+					Integer timeDiff = endTimeHr - startTimeHr;
+					String strHr = getStrHrFromTimeStr(fullStartTime);
+
+					// Calculate the total hours time difference
+					if (timeDiff < 0) {
+						timeDiff = (12 - startTimeHr) + endTimeHr;
+					}
+
+					if (wholeHrsSpan) {
+						gridFormatter.setRowSpan(getRowFromHour(strHr),
+								eventCol, timeDiff);
+						newEvent.setHeight("100%");
+					} else {
+						int top = newEvent.getAbsoluteTop();
+						int minutesOffset = Integer.parseInt(event
+								.getMinutesOffset());
+						double percentOffset = ((double) minutesOffset / 60.0) * 100.0;
+
+						newEvent.getElement().getStyle()
+								.setTop(top + percentOffset, Unit.PX);
+
+						//
+						// Constants.logger
+						// .severe("CALENDARWIDGET.JAVA: MINUTES OFFSET: "
+						// + minutesOffset);
+						// Constants.logger
+						// .severe("CALENDARWIDGET.JAVA: PERCENT OFFSET: "
+						// + percentOffset);
+						// newEvent.getElement().getStyle()
+						// .setPosition(Position.ABSOLUTE);
+						// newEvent.setWidth(cellWidth + "px");
+						//
+						// int offsetHeight = cellHeight * 2;
+						// int pxHeight = timeDiff * (cellHeight);
+						// double pxHeightAdd = ((double) minutesOffset / 60.0)
+						// * (double) cellHeight;
+						// int totalHeight = (int) (pxHeight + pxHeightAdd)
+						// + offsetHeight;
+						//
+						// Constants.logger.severe("CELL HEIGHT: " +
+						// cellHeight);
+						// Constants.logger
+						// .severe("OFFSETHEIGHT: " + offsetHeight);
+						// Constants.logger.severe("HEIGHTINPXFORFULLHRS: "
+						// + pxHeight);
+						// Constants.logger.severe("HEIGHTINPXFORADDHRS: "
+						// + pxHeightAdd);
+						//
+						// newEvent.getElement().getStyle()
+						// .setTop(totalHeight, Unit.PX);
+						// Constants.logger.severe("TOP INPX: " + totalHeight);
+
+					}
+
+					grid.setWidget(getRowFromHour(strHr), eventCol, newEvent);
 					eventCounter++;
 				} else {
 					Constants.logger
@@ -277,6 +329,20 @@ public class CalendarWidget extends VerticalPanel {
 									+ beginWeek + " - " + endWeek);
 				}
 			}
+	}
+
+	private Integer getDayOfMonth(String date) {
+		String[] dateArray = date.split("/");
+		return Integer.parseInt(dateArray[1]);
+	}
+
+	private Integer getIntHrFromTimeStr(String strTime) {
+		String temp = strTime.substring(0, strTime.indexOf(":"));
+		return Integer.parseInt(temp);
+	}
+
+	private String getStrHrFromTimeStr(String strTime) {
+		return strTime.substring(0, strTime.indexOf(":"));
 	}
 
 	/**

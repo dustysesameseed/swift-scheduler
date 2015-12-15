@@ -7,6 +7,7 @@ import capstone.gwttrial.client.calendar.service.CalendarService;
 import capstone.gwttrial.client.calendar.service.CalendarServiceAsync;
 import capstone.gwttrial.client.doevent.CreateEvent;
 import capstone.gwttrial.client.login.LogoutEvent;
+import capstone.gwttrial.client.user.User;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -42,6 +43,28 @@ public class CalendarPresenter implements Presenter {
 				eventBus.fireEvent(new LogoutEvent("logout"));
 			}
 		});
+
+		if (User.getLevel().equalsIgnoreCase("Team Member")) {
+			viewHandler.getReqEventsLink().addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					// eventBus.fireEvent(new AddEvent());
+				}
+			});
+		} else {
+			viewHandler.getApproveEventsLink().addClickHandler(
+					new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							// eventBus.fireEvent(new AddEvent());
+						}
+					});
+		}
+
+		viewHandler.getShowApprovedEventsLink().addClickHandler(
+				new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						// eventBus.fireEvent(new AddEvent());
+					}
+				});
 
 		final Map<Button, EventDetails> buttonEvMap = CalendarWidget
 				.getEventButtonMap();
@@ -81,7 +104,7 @@ public class CalendarPresenter implements Presenter {
 	}
 
 	public void go(final HasWidgets container) {
-		
+
 		bind();
 		container.clear();
 		container.add(viewHandler.asWidget());
